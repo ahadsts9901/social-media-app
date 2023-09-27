@@ -12,11 +12,9 @@ import cookieParser from 'cookie-parser'
 const app = express();
 app.use(express.json()); // body parser
 app.use(cookieParser()); // cookie parser
-app.use('/login', express.static(path.join(__dirname, 'public/login')))
-app.use('/signup', express.static(path.join(__dirname, 'public/signup')))
 
 app.use("/api/v1", authRouter)
-
+app.use(express.static(path.join(__dirname, 'web/build')))
 
 app.use((req, res, next) => {
     console.log("cookies: ", req.cookies);
@@ -43,7 +41,6 @@ app.use((req, res, next) => {
 })
 
 app.use("/api/v1", postRouter)
-app.use(express.static(path.join(__dirname, 'public')))
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

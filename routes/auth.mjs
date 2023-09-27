@@ -6,6 +6,7 @@ import {
     stringToHash,
     varifyHash
 } from "bcrypt-inzi";
+import "dotenv/config"
 
 const db = client.db("weapp")
 const col = db.collection("auth")
