@@ -256,15 +256,21 @@ div:where(.swal2-container) div:where(.swal2-loader) {
     border-color: #15182b #f6f2f1 !important;
 }
 
+#root>div{
+    width: 100%!important;
+    height: 100%!important;
+}
+
 .authContainer {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 4em;
     /* padding: 0em 8em; */
-    width: 100%;
+    width: 100% !important;
     background-image: url(https://raw.githubusercontent.com/ahadsts9901/json-server/main/public/background.png);
     background-repeat: repeat;
+    padding: none;
 }
 
 .black {
@@ -284,10 +290,12 @@ div:where(.swal2-container) div:where(.swal2-loader) {
     flex-direction: column;
     height: 100%;
     justify-content: center;
-    align-items:start;
+    align-items: start;
     gap: 2em;
     color: #284352;
     padding: 0em 1.5em;
+    /* width: 100%; */
+    margin-top: 8em;
 }
 
 .leftLogo {

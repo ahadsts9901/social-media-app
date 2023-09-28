@@ -9,7 +9,7 @@ const Home = () => {
   const [posts, setPosts] = useState([]);
   const searchInputRef = useRef(null)
   const navigate = useNavigate()
-  let me = "me"
+  const me = ""
 
   useEffect(() => {
     renderPost();
@@ -330,7 +330,7 @@ const Home = () => {
           <NoPost />
         ) : (
           posts.map((post, index) => (
-            <Post key={post._id} title={post.title} text={post.text} time={post.time} postId={post._id} del={deletePost} edit={editPost} delAll={deleteAllPosts} />
+            <Post key={index} title={post.title} text={post.text} time={post.time} postId={post._id} del={deletePost} edit={editPost} delAll={deleteAllPosts} />
           ))
         )}
       </div>

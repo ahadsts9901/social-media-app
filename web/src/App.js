@@ -12,6 +12,7 @@ import { useEffect, useContext } from 'react';
 import { Routes, Route, Navigate, Link } from "react-router-dom";
 import { GlobalContext } from "./context/context"
 
+import "./App.css"
 import axios from "axios"
 
 const App = () => {
@@ -40,7 +41,9 @@ const App = () => {
     }, []);
 
     return (
-        <div>
+        <div className='div'>
+
+            {/* <div>{JSON.stringify(state)}</div> */}
             {/* user routes */}
             {state.isLogin === true && state.role === "user" ? (
                 <>
@@ -92,6 +95,26 @@ const App = () => {
                         <Route path="/signup" element={<Signup />} />
 
                         <Route path="*" element={<Navigate to="/login" replace={true} />} />
+                    </Routes>
+                </>
+            ) : null}
+
+            {/* splash screen */}
+            {state.isLogin === null ? (
+                <>
+                    <Routes>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/signup" element={<Signup />} />
+                        <Route path="/" element={<Home />} />
+                        <Route path="/chat" element={<Chat />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/search" element={<Search />} />
+                        <Route path="/create" element={<Create />} />
+                        <Route path="/notofications" element={<Notifications />} />
+                        <Route path="/games" element={<Games />} />
+                        <Route path="*" element={<Navigate to="/" replace={true} />} />
+
+                        {/* <Route path="*" element={<Navigate to="/login" replace={true} />} /> */}
                     </Routes>
                 </>
             ) : null}

@@ -14,9 +14,8 @@ app.use(express.json()); // body parser
 app.use(cookieParser()); // cookie parser
 
 app.use("/api/v1", authRouter)
-app.use(express.static(path.join(__dirname, 'web/build')))
 
-app.use((req, res, next) => {
+app.use("/api/v1", (req, res, next) => {
     console.log("cookies: ", req.cookies);
 
     const token = req.cookies.token;
@@ -40,7 +39,12 @@ app.use((req, res, next) => {
 
 })
 
+
 app.use("/api/v1", postRouter)
+
+app.use(express.static(path.join(__dirname, 'web/build')))
+app.get(express.static(path.join(__dirname, 'web/build')))
+app.use("*", express.static(path.join(__dirname, 'web/build')))
 
 app.use("/api/v1/profile", (req, res) => {
     res.send("OK");
