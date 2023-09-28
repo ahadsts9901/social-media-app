@@ -62,23 +62,12 @@ const Signup = () => {
         confirmPassword: confirmPassword,
       })
       .then(function (response) {
-        setValidationMessage('');
-        Swal.fire({
-          icon: 'success',
-          title: 'Signup Successful',
-          timer: 1000,
-          showConfirmButton: false,
-        });
+        setValidationMessage('Signup Successfull');
         navigate('/');
       })
       .catch(function (error) {
         console.log(error.data);
-        Swal.fire({
-          icon: 'error',
-          title: 'User already exists',
-          timer: 1000,
-          showConfirmButton: false,
-        });
+        setValidationMessage('User Already Exists');
       });
 
     // Reset the input fields after successful signup
@@ -91,10 +80,11 @@ const Signup = () => {
 
   return (
     <div className='authContainer'>
-        <h3 className="desktopHeading center">Create Account</h3>
+      <h3 className="desktopHeading center">Create<br />Account</h3>
       <div className='logoCont'>
         <img src={logo} className='logo' alt="logo" />
-        <h1><span className='black'>We</span><span> App</span></h1>
+        <h1 className='line'><span className='black'>We</span><span> App</span></h1>
+        <p>Make Your Own</p>
         <p className="leftLogo">
           Already have an account?{" "}
           <Link to="/login" className="center">
@@ -104,7 +94,7 @@ const Signup = () => {
       </div>
       <form className="c jcc ais login-signup" onSubmit={signup}>
         <div className='topHeading'>
-          <h2 className="center">Create Account</h2>
+          <h2 className="center mobileHeading">Create<br />Account</h2>
         </div>
         <input
           ref={firstNameRef}
@@ -112,6 +102,8 @@ const Signup = () => {
           type="text"
           className="input"
           placeholder="First Name"
+          minLength={3}
+          maxLength={10}
         />
         <input
           ref={lastNameRef}
@@ -119,6 +111,8 @@ const Signup = () => {
           type="text"
           className="input"
           placeholder="Last Name"
+          minLength={3}
+          maxLength={10}
         />
         <input
           ref={emailRef}

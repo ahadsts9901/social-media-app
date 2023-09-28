@@ -13,7 +13,7 @@
 /* body */
 
 body {
-    background-color: #edd2cb !important;
+    background-color: #ecedf2 !important;
     color: #f6f2f1 !important;
     display: flex;
     flex-direction: column;
@@ -271,21 +271,23 @@ div:where(.swal2-container) div:where(.swal2-loader) {
     gap: 4em;
     /* padding: 0em 8em; */
     width: 100%;
+    background-image: url(https://raw.githubusercontent.com/ahadsts9901/json-server/main/public/background.png);
+    background-repeat: repeat;
 }
 
-.black{
+.black {
     color: #629894;
 }
 
 /*  */
 
-.logo{
+.logo {
     width: 12em;
     height: 5em;
     object-fit: cover;
 }
 
-.logoCont{
+.logoCont {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -296,29 +298,32 @@ div:where(.swal2-container) div:where(.swal2-loader) {
     padding: 0em 1.5em;
 }
 
-.leftLogo{
+.leftLogo {
     text-align: left;
     width: 100%;
 }
 
-.last{
-    visibility: hidden;
-}
-
-.topHeading{
-    opacity: 0;
-}
-
-.desktopHeading{
+.desktopHeading {
     justify-self: self-start;
     align-self: self-start;
     position: fixed;
     top: 0;
     left: 0;
+    width: 7em !important;
+    height: 7em;
+    display: flex;
+    align-items: start;
+    justify-content: left;
+    background-color: #284352;
+    color: #fff;
+    border-radius: 0% 0% 100% 100% / 0% 0% 100% 61%;
+    padding-left: 1em;
+    text-align: left;
+    font-size: 1.8em;
+    padding-top: 1.5em;
 }
 
 .login-signup {
-    background-color: #ecedf2;
     padding: 0 !important;
     border-radius: 10px;
     color: #284352;
@@ -328,20 +333,13 @@ div:where(.swal2-container) div:where(.swal2-loader) {
     align-items: center;
     max-width: 375px;
     min-width: 250px;
-    /* min-width: 250px;
-    max-width: 425px; */
     border-radius: 0 !important;
     font-size: 0.7em;
-    /* box-shadow: rgba(0, 0, 0, 0.25) 0px 19px 38px, rgba(0, 0, 0, 0.25) 0px 15px 12px; */
 }
 
 .login-signup>* {
     min-width: 250px;
     max-width: 425px;
-}
-
-.login-signup>div {
-    width: 425px;
 }
 
 .login-signup a,
@@ -378,31 +376,16 @@ div:where(.swal2-container) div:where(.swal2-loader) {
     text-align: center;
 }
 
-h3.center {
-    font-weight: bold;
-    text-align: left;
-    padding: 0.8em;
-    padding-bottom: 1em;
-    width: 100%;
-    line-height: 1.7em;
-    font-size: 1.5em;
-    background-color: #284352;
-    color: #fff;
-    width: 7em;
-    align-self: self-start;
-    border-radius: 0% 0% 50% 50%;
-}
-
 .last {
     display: flex;
     /* flex-direction: column; */
     justify-content: center;
     align-items: center;
-    width: 100% !important;
     background-color: #284352;
     padding: 2em 2em 1em 2em;
-    border-radius: 100% 100% 0% 0% !important;
+    border-radius: 50% 50% 50% 50% / 100% 100% 0% 0%;
     font-size: 1.5em;
+    visibility: hidden;
 }
 
 a.center {
@@ -454,8 +437,58 @@ form {
     border-radius: 5px !important;
 }
 
-@media only screen and (max-width:425px) {
+.line {
+    border-bottom: 1px solid #284352;
+    padding-bottom: 0.3em;
+}
+
+
+.topHeading {
+    font-weight: bold;
+    text-align: left;
+    padding: 0.8em;
+    padding-bottom: 1em;
+    line-height: 1.7em;
+    font-size: 1.5em;
+    background-color: #284352;
+    color: #fff;
+    align-self: self-start;
+    border-radius: 0% 0% 50% 50%;
+    opacity: 0;
+    width: 2em !important;
+}
+
+.mobileHeading {
+    text-align: left;
+    padding: 0.5em 1em;
+    width: fit-content;
+    font-size: 1.8em;
+    line-height: 1.8em;
+}
+
+@media only screen and (max-width:785px) {
+
+    .logoCont {
+        display: none;
+    }
+
+    .desktopHeading {
+        display: none;
+    }
+
+    .topHeading {
+        opacity: 1;
+    }
+
+    .last {
+        visibility: visible;
+    }
+
     .login-signup>div {
         width: 100%;
+    }
+
+    .login-signup {
+        min-width: 100%;
     }
 }
