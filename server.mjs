@@ -42,6 +42,10 @@ app.use((req, res, next) => {
 
 app.use("/api/v1", postRouter)
 
+app.use("/api/v1/profile", (req, res) => {
+    res.send("OK");
+})
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Example server listening on port ${PORT}`)

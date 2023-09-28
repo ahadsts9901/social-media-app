@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
-import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
 import '../signup/signup.css';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from "../assets/logoDark.png"

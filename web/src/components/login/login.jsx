@@ -1,11 +1,18 @@
-import React, { useState, useRef } from 'react';
+import React, {
+  useState, useRef
+  // , useContext 
+} from 'react';
 import axios from 'axios';
-import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
 import '../signup/signup.css';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from "../assets/logoDark.png"
+// import { GlobalContext } from "../../context/context"
 
 const Login = () => {
+
+  // let { state, dispatch } = useContext(GlobalContext);
+
   const [email, setEmail] = useState('');
   const [validationMessage, setValidationMessage] = useState('');
   const [isShowPassword, setShowPassword] = useState(false);
@@ -30,11 +37,10 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.post(`/api/v1/login`, {
+      await axios.post(`/api/v1/login`, {
         email: email,
         password: passwordRef.current.value,
       });
-
       console.log("login successfully");
       setValidationMessage('Login Successfull');
       navigate('/');

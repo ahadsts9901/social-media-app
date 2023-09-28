@@ -8,7 +8,7 @@ const col = db.collection("posts")
 let router = express.Router()
 
 // POST    /api/v1/post
-router.post('/post', async(req, res, next) => {
+router.post('/post', async (req, res, next) => {
 
     if (!req.body.title ||
         !req.body.text
@@ -34,7 +34,7 @@ router.post('/post', async(req, res, next) => {
 })
 
 //GET  ALL   POSTS   /api/v1/post/:postId
-router.get('/posts', async(req, res, next) => {
+router.get('/posts', async (req, res, next) => {
     try {
         const cursor = col.find({}).sort({ _id: -1 });
         let results = await cursor.toArray();
@@ -47,7 +47,7 @@ router.get('/posts', async(req, res, next) => {
 });
 
 // GET  ONE   POST   /api/v1/posts/
-router.get('/post/:postId', async(req, res, next) => {
+router.get('/post/:postId', async (req, res, next) => {
     const postId = new ObjectId(req.params.postId);
 
     try {
@@ -65,7 +65,7 @@ router.get('/post/:postId', async(req, res, next) => {
 
 // DELETE ALL   /api/v1/posts
 
-router.delete('/posts/all', async(req, res, next) => {
+router.delete('/posts/all', async (req, res, next) => {
     try {
 
         const deleteResponse = await col.deleteMany({});
@@ -82,7 +82,7 @@ router.delete('/posts/all', async(req, res, next) => {
 
 
 // DELETE  /api/v1/post/:postId
-router.delete('/post/:postId', async(req, res, next) => {
+router.delete('/post/:postId', async (req, res, next) => {
     const postId = new ObjectId(req.params.postId);
 
     try {
@@ -100,7 +100,7 @@ router.delete('/post/:postId', async(req, res, next) => {
 // EDIT post
 
 // PUT /api/v1/post/:postId
-router.put('/post/:postId', async(req, res, next) => {
+router.put('/post/:postId', async (req, res, next) => {
     const postId = new ObjectId(req.params.postId);
     const { title, text } = req.body;
 
@@ -122,5 +122,26 @@ router.put('/post/:postId', async(req, res, next) => {
     }
 });
 
+// profile
+
+router.get('/profile', async (req, res, next) => {
+
+    try {
+        let result = await userCollection.findOne({ email: req.body.decoded.email });
+        console.log("result: ", result); // [{...}] []
+        res.send({
+            message: 'profile fetched',
+            data: {
+                isAdmin: result.isAdmin,
+                firstName: result.firstName,
+                lastName: result.lastName,
+                email: result.email,
+            }
+        });
+    } catch (e) {
+        console.log("error getting data mongodb: ", e);
+        res.status(500).send('server error, please try later');
+    }
+})
 
 export default router

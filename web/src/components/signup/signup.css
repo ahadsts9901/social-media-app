@@ -111,14 +111,6 @@ a {
     align-items: center;
 }
 
-.aifs {
-    align-items: flex-start;
-}
-
-.aife {
-    align-items: flex-end;
-}
-
 .ais {
     align-items: start;
 }
@@ -292,7 +284,7 @@ div:where(.swal2-container) div:where(.swal2-loader) {
     flex-direction: column;
     height: 100%;
     justify-content: center;
-    align-items: start;
+    align-items:start;
     gap: 2em;
     color: #284352;
     padding: 0em 1.5em;
@@ -312,7 +304,7 @@ div:where(.swal2-container) div:where(.swal2-loader) {
     width: 7em !important;
     height: 7em;
     display: flex;
-    align-items: start;
+    align-items: flex-start;
     justify-content: left;
     background-color: #284352;
     color: #fff;
