@@ -21,7 +21,7 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  /* color: white; */
+  color: white;
 }
 
 .App-link {
@@ -35,4 +35,45 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+.splashCont{
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5em;
+  background-image: url(./components/assets/background.png);
+  background-repeat: repeat;
+  color: #284352;
+}
+
+.splash{
+  width: 8em;
+  height: 4em;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.line {
+  border-bottom: 1px solid #284352;
+  width: 7em;
+  text-align: center;
+  padding-bottom: 0.5em;
+}
+
+.black {
+  color: #629894;
+}
+
+nav>ul>li{
+  list-style-type: none;
+  display: inline-block;
+  padding: 0.5em;
+  font-size: 1.5em;
 }

@@ -1,11 +1,15 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import axios from 'axios';
 // import Swal from 'sweetalert2';
 import '../signup/signup.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import logo from "../assets/logoDark.png"
+import { GlobalContext } from "../../context/context"
 
 const Signup = () => {
+
+  const {state, dispatch} = useContext(GlobalContext);
+
   const [validationMessage, setValidationMessage] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -15,7 +19,7 @@ const Signup = () => {
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
 
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   // Toggle password visibility
   const togglePasswordVisibility = () => {
@@ -60,10 +64,18 @@ const Signup = () => {
         email: email,
         password: password,
         confirmPassword: confirmPassword,
-      })
+      },
+      )
       .then(function (response) {
         setValidationMessage('Signup Successfull');
-        navigate('/');
+
+        dispatch({
+          type: "USER_LOGIN",
+          payload: response.data.data,
+        });
+
+        // navigate('/');
+        window.location.pathname = "/"
       })
       .catch(function (error) {
         console.log(error.data);

@@ -4,14 +4,15 @@ import React
 // import axios from 'axios';
 // import Swal from 'sweetalert2';
 import './notifications.css';
+import '../main.css'
 // import { Link, useNavigate } from 'react-router-dom';
 // import logo from "../assets/logoDark.png"
 
-const Notofications = () => {
+const Notifications = () => {
 
   return (
-  <div>Notofications</div>  
+  <div>Notifications</div>  
   )
 };
 
-export default Notofications;
+export default Notifications;

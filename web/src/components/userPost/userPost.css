@@ -168,3 +168,7 @@ h6 {
     padding: 0em 1.5em;
     word-wrap: break-word !important;
 }
+
+.editDelBtns{
+    font-size: 1.2em;
+}

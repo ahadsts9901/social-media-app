@@ -3,9 +3,9 @@ import { reducer } from "./reducer";
 export const GlobalContext = createContext("Initial Value");
 let data = {
     user: {}, // { firstName: "John", lastName: "Doe", email: "XXXXXXXXXXXXXX" }
-    role: null, // null || "user" || "admin"
     isLogin: null, // null || true || false
-    darkTheme: true
+    isAdmin: null, // null || "user" || "admin"
+    darkTheme: localStorage.getItem("weAppDarkTheme") || false
 }
 export default function ContextProvider({ children }) {
     const [state, dispatch] = useReducer(reducer, data)

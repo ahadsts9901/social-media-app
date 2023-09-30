@@ -101,6 +101,7 @@ router.post('/signup', async(req, res, next) => {
                 lastName: req.body.lastName,
                 email: req.body.email,
                 password: passwordHash,
+                isAdmin: false,
                 createdOn: new Date()
             });
 

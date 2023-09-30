@@ -4,6 +4,7 @@ import { ObjectId } from 'mongodb';
 
 const db = client.db("weapp")
 const col = db.collection("posts")
+const userCollection = db.collection("auth")
 
 let router = express.Router()
 
@@ -26,7 +27,8 @@ router.post('/post', async (req, res, next) => {
     const insertResponse = await col.insertOne({
         title: req.body.title,
         text: req.body.text,
-        time: new Date()
+        time: new Date(),
+        email: req.body.email
     })
     console.log(insertResponse)
 
@@ -102,15 +104,15 @@ router.delete('/post/:postId', async (req, res, next) => {
 // PUT /api/v1/post/:postId
 router.put('/post/:postId', async (req, res, next) => {
     const postId = new ObjectId(req.params.postId);
-    const { title, text } = req.body;
+    const { text } = req.body;
 
-    if (!title || !text) {
+    if (!text) {
         res.status(403).send('Required parameters missing. Please provide both "title" and "text".');
         return;
     }
 
     try {
-        const updateResponse = await col.updateOne({ _id: postId }, { $set: { title, text } });
+        const updateResponse = await col.updateOne({ _id: postId }, { $set: { text } });
 
         if (updateResponse.matchedCount === 1) {
             res.send(`Post with id ${postId} updated successfully.`);
@@ -121,6 +123,25 @@ router.put('/post/:postId', async (req, res, next) => {
         console.error(error);
     }
 });
+
+// all posts of a user
+
+// GET ALL POSTS FOR A SPECIFIC EMAIL /api/v1/posts/:email
+router.get('/posts/:email', async (req, res, next) => {
+    const userEmail = req.params.email;
+
+    try {
+        const cursor = col.find({ email: userEmail }).sort({ _id: -1 });
+        const results = await cursor.toArray();
+
+        console.log(results);
+        res.send(results);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server error');
+    }
+});
+
 
 // profile
 
@@ -138,6 +159,7 @@ router.get('/profile', async (req, res, next) => {
                 email: result.email,
             }
         });
+
     } catch (e) {
         console.log("error getting data mongodb: ", e);
         res.status(500).send('server error, please try later');

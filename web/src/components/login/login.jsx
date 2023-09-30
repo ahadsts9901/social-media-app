@@ -1,26 +1,24 @@
 import React, {
-  useState, useRef
-  // , useContext 
+  useState, useRef, useContext
 } from 'react';
 import axios from 'axios';
 // import Swal from 'sweetalert2';
 import '../signup/signup.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import logo from "../assets/logoDark.png"
-// import { GlobalContext } from "../../context/context"
+import { GlobalContext } from "../../context/context"
 
 const Login = () => {
 
-  // let { state, dispatch } = useContext(GlobalContext);
+  let { state, dispatch } = useContext(GlobalContext);
 
   const [email, setEmail] = useState('');
   const [validationMessage, setValidationMessage] = useState('');
   const [isShowPassword, setShowPassword] = useState(false);
 
   const passwordRef = useRef(null);
-  // const history = useHistory();
 
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   // Handle form submission
   const login = async (event) => {
@@ -37,14 +35,22 @@ const Login = () => {
     }
 
     try {
-      await axios.post(`/api/v1/login`, {
+      const response = await axios.post(`/api/v1/login`, {
         email: email,
         password: passwordRef.current.value,
+      },
+        {
+          withCredentials: true,
+        });
+
+      dispatch({
+        type: "USER_LOGIN",
+        payload: response.data.data,
       });
+
       console.log("login successfully");
       setValidationMessage('Login Successfull');
-      navigate('/');
-      // history.push("/"); // Redirect to the homepage after successful login
+      window.location.pathname = "/"
     } catch (error) {
       setValidationMessage('Email or Password incorrect');
       console.log("Email or Password incorrect");

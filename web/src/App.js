@@ -5,14 +5,17 @@ import Chat from './components/chat/chat.jsx';
 import Search from './components/search/search.jsx';
 import Games from './components/games/games.jsx';
 import Notifications from './components/notifications/notifications.jsx';
-import Create from './components/create/create.jsx';
+// import Create from './components/create/create.jsx';
 import Profile from './components/profile/profile.jsx';
+
+import {ChatDots, ChatDotsFill, House, HouseFill, Person, PersonFill, Controller, Search as SearchBS, Bell, BellFill } from 'react-bootstrap-icons'
 
 import { useEffect, useContext } from 'react';
 import { Routes, Route, Navigate, Link } from "react-router-dom";
 import { GlobalContext } from "./context/context"
 
 import "./App.css"
+import logo from "./components/assets/logoDark.png"
 import axios from "axios"
 
 const App = () => {
@@ -29,11 +32,14 @@ const App = () => {
                     type: "USER_LOGIN",
                     payload: resp.data.data,
                 });
+                state.isLogin = true
+                state.isAdmin = resp.data.data.isAdmin
             } catch (err) {
                 console.log(err);
                 dispatch({
                     type: "USER_LOGOUT",
                 });
+                state.isLogin = false
             }
         };
 
@@ -45,32 +51,31 @@ const App = () => {
 
             {/* <div>{JSON.stringify(state)}</div> */}
             {/* user routes */}
-            {state.isLogin === true && state.role === "user" ? (
+            {state.isLogin === true && state.isAdmin === "false" ? (
                 <>
                     <nav>
                         <ul>
                             <li>
-                                <Link to={`/`}>Home</Link>
+                                <Link to={`/`}><HouseFill/></Link>
                             </li>
                             <li>
-                                <Link to={`/chat`}>Chat</Link>
+                                <Link to={`/chat`}><ChatDotsFill/></Link>
                             </li>
                             <li>
-                                <Link to={`/profile`}>Profile</Link>
+                                <Link to={`/profile`}><PersonFill/></Link>
                             </li>
                             <li>
-                                <Link to={`/search`}>Search</Link>
+                                <Link to={`/search`}><SearchBS/></Link>
                             </li>
-                            <li>
+                            {/* <li>
                                 <Link to={`/create`}>Create</Link>
-                            </li>
+                            </li> */}
                             <li>
-                                <Link to={`/notifications`}>Notifications</Link>
+                                <Link to={`/notifications`}><BellFill/></Link>
                             </li>
-                            <li>
-                                <Link to={`/games`}>Games</Link>
-                            </li>
-                            {state.user.email}
+                            {/* <li>
+                                <Link to={`/games`}><Controller/></Link>
+                            </li> */}
                         </ul>
                     </nav>
 
@@ -79,8 +84,8 @@ const App = () => {
                         <Route path="/chat" element={<Chat />} />
                         <Route path="/profile" element={<Profile />} />
                         <Route path="/search" element={<Search />} />
-                        <Route path="/create" element={<Create />} />
-                        <Route path="/notofications" element={<Notifications />} />
+                        {/* <Route path="/create" element={<Create />} /> */}
+                        <Route path="/notifications" element={<Notifications />} />
                         <Route path="/games" element={<Games />} />
                         <Route path="*" element={<Navigate to="/" replace={true} />} />
                     </Routes>
@@ -93,7 +98,6 @@ const App = () => {
                     <Routes>
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<Signup />} />
-
                         <Route path="*" element={<Navigate to="/login" replace={true} />} />
                     </Routes>
                 </>
@@ -102,20 +106,11 @@ const App = () => {
             {/* splash screen */}
             {state.isLogin === null ? (
                 <>
-                    <Routes>
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/signup" element={<Signup />} />
-                        <Route path="/" element={<Home />} />
-                        <Route path="/chat" element={<Chat />} />
-                        <Route path="/profile" element={<Profile />} />
-                        <Route path="/search" element={<Search />} />
-                        <Route path="/create" element={<Create />} />
-                        <Route path="/notofications" element={<Notifications />} />
-                        <Route path="/games" element={<Games />} />
-                        <Route path="*" element={<Navigate to="/" replace={true} />} />
-
-                        {/* <Route path="*" element={<Navigate to="/login" replace={true} />} /> */}
-                    </Routes>
+                    <div className='splashCont'>
+                        <img src={logo} className='splash'></img>
+                        <h1 className='line'><span className='black'>We</span><span> App</span></h1>
+                        <p>Make Your Own</p>
+                    </div>
                 </>
             ) : null}
         </div>

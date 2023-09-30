@@ -1,10 +1,10 @@
-import "./post.css";
+import "./userPost.css";
 // import { TrashFill, PencilFill } from 'react-bootstrap-icons';
 import moment from 'moment'
 import { useState } from "react";
-// import profileImg from "../assets/profileImg.webp"
+import profileImg from "../assets/profileImg.webp"
 
-const Post = (props) => {
+const UserPost = (props) => {
     const [showFullPost, setShowFullPost] = useState(false)
     const formattedTime = moment(props.time).fromNow();
     const fullText = props.text
@@ -31,6 +31,10 @@ const Post = (props) => {
                 <button><i className="bi bi-chat-square"></i>Comment</button>
                 <button><i className="bi bi-share-fill"></i>Share</button>
             </div>
+            <div className="buttonContainer">
+                <button className="editDelBtns" onClick={() => { props.edit(props.postId) }} ><i className="bi bi-pencil-fill"></i>Edit</button>
+                <button className="editDelBtns" onClick={() => { props.del(props.postId) }} ><i className="bi bi-trash-fill"></i>Delete</button>
+            </div>
         </div>
 
     );
@@ -41,4 +45,4 @@ const NoPost = () => {
     return (<h2 className="noPostsMessage">No post found...</h2>)
 };
 
-export { Post, NoPost };
+export { UserPost, NoPost };
