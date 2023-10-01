@@ -8,7 +8,7 @@ body {
     /* background-image: url(./background.png); */
     /* background-repeat: repeat; */
     /* background-position: center; */
-    background-color: #e8f0ff !important;
+    background-color: #efefef !important;
     color: #284352 !important;
     display: flex;
     flex-direction: column;
@@ -171,4 +171,10 @@ h6 {
 
 .editDelBtns{
     font-size: 1.2em;
+}
+
+#editText{
+    height: 15em!important;
+    padding: 1em;
+    border-radius: 0px!important;
 }

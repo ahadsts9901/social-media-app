@@ -5,6 +5,7 @@ import './profile.css';
 import { UserPost, NoPost } from '../userPost/userPost';
 import { useNavigate } from 'react-router-dom';
 import { GlobalContext } from '../../context/context';
+import { PencilFill } from 'react-bootstrap-icons'
 
 const Profile = () => {
 
@@ -13,43 +14,11 @@ const Profile = () => {
   const [userPosts, setUserPosts] = useState([]);
   const navigate = useNavigate()
 
+  let userEmail = state.user.email
+
   useEffect(() => {
     renderUserPost();
-  }, []);
-
-  const createPost = (event) => {
-    event.preventDefault();
-
-    const userLogEmail = `${state.user.email}`
-    console.log(userLogEmail)
-    const postTitle = `${state.user.firstName} ${state.user.lastName}`;
-    const postText = document.querySelector("#text");
-    console.log(postTitle)
-
-    axios
-      .post(`/api/v1/post`, {
-        title: postTitle,
-        text: postText.value,
-        email: userLogEmail,
-      })
-      .then(function (response) {
-        // console.log(response.data);
-        Swal.fire({
-          icon: 'success',
-          title: 'Post Added',
-          timer: 1000,
-          showConfirmButton: false,
-        });
-        // renderUserPost();
-      })
-      .catch(function (error) {
-        console.log(error);
-        document.querySelector(".result").innerHTML = "Error in post submission";
-      });
-
-    postText.value = "";
-  };
-  let userEmail = state.user.email
+  }, [userEmail]);
 
   const renderUserPost = () => {
     axios.get(`/api/v1/posts/${userEmail}`)
@@ -169,53 +138,57 @@ const Profile = () => {
 
   const logOut = (event) => {
     event.preventDefault();
-    axios.post(`/api/v1/logout`, {})
-      .then(function (response) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Logout Successfully',
-          timer: 1000,
-          showConfirmButton: false
-        });
 
-        dispatch({
-          type: "USER_LOGOUT"
-        });
+    Swal.fire({
+      title: 'Logout',
+      text: 'Are you sure you want to log out?',
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'Cancel',
+      confirmButtonText: 'Log Out',
+      confirmButtonColor: '#284352',
+      cancelButtonColor: '#284352',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        // Handle the logout logic here
+        return axios
+          .post(`/api/v1/logout`, {})
+          .then(function (response) {
+            dispatch({
+              type: 'USER_LOGOUT',
+            });
 
-        window.location.pathname = "/login"
+            window.location.pathname = '/login';
+            return true;
+          })
+          .catch(function (error) {
+            Swal.fire({
+              icon: 'error',
+              title: "Can't logout",
+              timer: 1000,
+              showConfirmButton: false,
+            });
+            return false;
+          });
+      },
+    });
+  };
 
-      })
-      .catch(function (error) {
-        Swal.fire({
-          icon: 'error',
-          title: "Can't logout",
-          timer: 1000,
-          showConfirmButton: false
-        });
-      });
-  }
 
   return (
     <div className='posts'>
-      <div className="space-around row">
-        <div className='head'>
-          <h1 className="green">Profile</h1>
-          <button className='postButton' onClick={logOut}>Log Out</button>
-        </div>
-      </div>
 
       <div className="profile">
         <img className='profileIMG' src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
-        <h2 className='profileName'>{state.user.firstName} {state.user.lastName}</h2>
-      </div>
 
-      <form onSubmit={createPost} className='postForm'>
-        <h2 className='createNewPost'>Share a thought!</h2>
-        <textarea required id="text" placeholder="Enter Text" className="postInput textarea"></textarea>
-        <button type="submit" className="postButton">
-          Post
-        </button>
-      </form>
+          <h2 className='profileName'>{state.user.firstName} {state.user.lastName} <PencilFill className='editName' /> </h2>
+
+        <button className='logOutButton' onClick={logOut}>Log Out</button>
+        <div className='profileImageContainer'>
+          <label className='editIMG' htmlFor="profileImage"><PencilFill /></label>
+          <input type="file" className="file hidden" id="profileImage" accept="image/*"></input>
+        </div>
+      </div>
 
       <div className="result">
         {userPosts.length === 0 ? (

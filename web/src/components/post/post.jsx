@@ -1,41 +1,53 @@
 import "./post.css";
-// import { TrashFill, PencilFill } from 'react-bootstrap-icons';
-import moment from 'moment'
+import moment from "moment";
 import { useState } from "react";
-// import profileImg from "../assets/profileImg.webp"
 
 const Post = (props) => {
-    const [showFullPost, setShowFullPost] = useState(false)
+    const [showFullPost, setShowFullPost] = useState(false);
     const formattedTime = moment(props.time).fromNow();
-    const fullText = props.text
-    const splittedText = props.text.split(' ').slice(0, 60).join(' ')
+    const fullText = props.text;
+    const splittedText = props.text.split(" ").slice(0, 40).join(" ");
+
+    const toggleShowFullPost = () => {
+        setShowFullPost(!showFullPost);
+    };
 
     return (
-
         <div className="singlePost">
             <div className="postHead">
-                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
+                <img
+                    src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                    alt="Profile"
+                />
                 <div className="postNames">
-                    <h2 >{props.title}</h2>
+                    <h2>{props.title}</h2>
                     <p>{formattedTime}</p>
                 </div>
             </div>
             <div className="textContainer">
-                <p className={`${(fullText.length <= 40) ? "bigText" : "smallText"}`}>
+                <p className={`${fullText.length <= 40 ? "bigText" : "smallText"}`}>
                     {showFullPost ? fullText : splittedText}
-                    <span className={`${(splittedText === fullText) ? "hidden" : "show"} see`} onClick={!showFullPost} >
-                        {showFullPost ? `...see less` : `...see more`}</span></p>
+                    {splittedText !== fullText && (
+                        <span className="see" onClick={toggleShowFullPost}>
+                            {showFullPost ? "...see less" : "...see more"}
+                        </span>
+                    )}
+                </p>
             </div>
             <div className="buttonContainer">
-                <button><i className="bi bi-hand-thumbs-up"></i>Like</button>
-                <button><i className="bi bi-chat-square"></i>Comment</button>
-                <button><i className="bi bi-share-fill"></i>Share</button>
+                <button>
+                    <i className="bi bi-hand-thumbs-up"></i>Like
+                </button>
+                <button>
+                    <i className="bi bi-chat-square"></i>Comment
+                </button>
+                <button>
+                    <i className="bi bi-share-fill"></i>Share
+                </button>
             </div>
         </div>
-
     );
 };
-
 
 const NoPost = () => {
     return (<h2 className="noPostsMessage">No post found...</h2>)

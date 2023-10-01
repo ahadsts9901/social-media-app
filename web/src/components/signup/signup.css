@@ -13,7 +13,6 @@
 /* body */
 
 body {
-    background-color: #ecedf2 !important;
     color: #f6f2f1 !important;
     display: flex;
     flex-direction: column;
@@ -30,7 +29,6 @@ body {
     align-items: center;
     width: 100%;
     height: 100%;
-    background-color: #ecedf2;
     padding: 0em;
 }
 
@@ -172,7 +170,7 @@ a {
     width: 250px;
     height: auto;
     color: #284352;
-    background-color: #ecedf2;
+    background-color: #efefef;
     border: none;
     border-radius: 0px !important;
     border-bottom: 1px solid #284352;

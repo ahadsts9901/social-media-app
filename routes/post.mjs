@@ -1,6 +1,7 @@
 import express from 'express';
 import { client } from '../mongodb.mjs'
 import { ObjectId } from 'mongodb';
+import openai from "openai"
 
 const db = client.db("weapp")
 const col = db.collection("posts")
@@ -142,7 +143,6 @@ router.get('/posts/:email', async (req, res, next) => {
     }
 });
 
-
 // profile
 
 router.get('/profile', async (req, res, next) => {
@@ -165,5 +165,53 @@ router.get('/profile', async (req, res, next) => {
         res.status(500).send('server error, please try later');
     }
 })
+
+// search
+
+const initializeOpenAIClient = () => {
+    return new openai({
+        apiKey: process.env.OPENAI_API_KEY, // Replace with your OpenAI API key
+    });
+};
+
+router.get("/search", async (req, res) => {
+    const queryText = req.query.q;
+
+    try {
+        // Initialize the OpenAI client
+        const openaiClient = initializeOpenAIClient();
+
+        // Create an embedding for the query text
+        const response = await openaiClient.embeddings.create({
+            model: "text-embedding-ada-002",
+            input: queryText,
+        });
+
+        // Extract the vector from the response
+        const vector = response?.data[0]?.embedding;
+
+        // Perform a search using the vector
+        const documents = await col
+            .aggregate([
+                {
+                    $search: {
+                        index: "weapp",
+                        knnBeta: {
+                            vector: vector,
+                            path: "embedding",
+                            k: 10,
+                        },
+                        scoreDetails: true,
+                    },
+                },
+            ])
+            .toArray();
+
+        res.send(documents);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error during search');
+    }
+});
 
 export default router

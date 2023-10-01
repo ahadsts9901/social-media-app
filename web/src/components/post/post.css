@@ -5,10 +5,6 @@
 }
 
 body {
-    /* background-image: url(./background.png); */
-    /* background-repeat: repeat; */
-    /* background-position: center; */
-    background-color: #e8f0ff !important;
     color: #284352 !important;
     display: flex;
     flex-direction: column;
@@ -43,8 +39,8 @@ h6 {
     justify-content: right;
     align-items: center;
     gap: 0.9em;
-    min-width: 250px!important;
-    max-width: 425px!important;
+    min-width: 250px !important;
+    max-width: 425px !important;
 }
 
 .postHead {

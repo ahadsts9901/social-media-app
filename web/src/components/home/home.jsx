@@ -18,7 +18,7 @@ const Home = () => {
   useEffect(() => {
     renderPost();
   }, [me]);
-  
+
   const renderPost = () => {
     axios
       .get(`/api/v1/posts`)
@@ -39,18 +39,15 @@ const Home = () => {
   };
 
   return (
-      <div className="result">
-        {posts.length === 0 ? (
-          <NoPost />
-        ) : (
-          posts.map((post, index) => (
-            <Post key={index} title={post.title} text={post.text} time={post.time} postId={post._id} />
-          ))
-          )}
-          {/* <Post key={123} title="HEllo this is my new post iam a web developer" 
-          text="At the heart of Apple's success is its line of consumer electronics, most notably the iPhone. Introduced in 2007, the iPhone revolutionized the smartphone industry, setting new standards for user-friendly interfaces, build quality, and app ecosystems. The iPhone remains a flagship product, continually pushing the boundaries of technology with each iteration."
-          time="2023-09-27T13:07:49.180+00:00" /> */}
-      </div>
+    <div className="result">
+      {posts.length === 0 ? (
+        <NoPost />
+      ) : (
+        posts.map((post, index) => (
+          <Post key={index} title={post.title} text={post.text} time={post.time} postId={post._id} />
+        ))
+      )}
+    </div>
   );
 };
 

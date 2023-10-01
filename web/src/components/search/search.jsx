@@ -1,7 +1,7 @@
 import React
-// , { useState, useRef }
- from 'react';
-// import axios from 'axios';
+  , { useState, useRef }
+  from 'react';
+import axios from 'axios';
 // import Swal from 'sweetalert2';
 import './search.css';
 import '../main.css'
@@ -10,8 +10,29 @@ import '../main.css'
 
 const Search = () => {
 
+  const [posts, setPosts] = useState([]);
+  const searchInputRef = useRef(null)
+
+  const search = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.get(`/api/v1/search?q=${searchInputRef.current.value}`);
+      console.log(response.data);
+
+      setPosts([...response.data]);
+    } catch (error) {
+      console.log(error.data);
+    }
+    e.target.reset()
+  };
+
   return (
-  <div>Search</div>  
+    <form className='search postForm' onSubmit={search}>
+      <input required type="search" placeholder="Search Here..." className="searchInput" ref={searchInputRef} />
+      <button type="submit" className="postButton searchButton">
+        Search
+      </button>
+    </form>
   )
 };
 

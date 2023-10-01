@@ -5,10 +5,6 @@
 }
 
 body {
-    /* background-image: url(./background.png); */
-    /* background-repeat: repeat; */
-    /* background-position: center; */
-    background-color: #efefef!important;
     color: #284352 !important;
     display: flex;
     flex-direction: column;
@@ -25,7 +21,6 @@ body {
     width: 100%;
     height: 100%;
     padding: 0em!important;
-    background-color: #efefef!important;
 }
 
 i,
@@ -46,4 +41,5 @@ h6 {
     justify-content: right;
     align-items: center;
     gap: 1em;
+    padding: 0em!important;
 }

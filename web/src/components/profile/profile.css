@@ -121,7 +121,7 @@ postForm {
     box-shadow: 0 0 0 !important;
 }
 
-.postButton {
+.logOutButton {
     color: #fff;
     background-color: #284352;
     width: fit-content !important;
@@ -131,10 +131,10 @@ postForm {
     padding: 0.5em 1em !important;
     margin: 0em !important;
     border-radius: 5px !important;
-    margin-top: 1em !important;
+    width: 100%!important;
 }
 
-.postButton:active {
+.logOutButton:active {
     background-color: #fff;
     color: #284352;
 }
@@ -452,15 +452,16 @@ h2.green {
 .postForm.search {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     margin: 0 !important;
     gap: 1em;
     background-color: #fff;
-    width: 82% !important;
+    width: 95% !important;
     padding: 0.5em;
     border-radius: 8px;
     margin: 0em auto !important;
+    margin-top: 1em;
 }
 
 .search>*:focus,
@@ -541,13 +542,6 @@ div:where(.swal2-container) div:where(.swal2-loader) {
     padding-top: 0.5em !important;
 }
 
-.head>.postButton {
-    width: 8em !important;
-    height: 3em;
-    font-size: 0.8em;
-    margin-left: auto;
-}
-
 .head {
     width: 100%;
     display: flex;
@@ -587,8 +581,8 @@ div:where(.swal2-container) div:where(.swal2-loader) {
 
 .profileName {
     width: 100%;
-    text-align: center;
-    padding: 1em 0em;
+    text-align: left;
+    padding: 0.5em 0em;
     color: #252525;
 }
 
@@ -597,13 +591,33 @@ div:where(.swal2-container) div:where(.swal2-loader) {
     height: 6em;
     object-fit: cover;
     border-radius: 100%;
-    border: 2px solid #252525;
+    border: 0px!important;
 }
 
 .profile{
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: right;
+    align-items: start;
     flex-direction: column;
     gap: 0.5em;
+    padding: 1em;
+    padding-top: 3em;
+    position: static;
+}
+
+.editName{
+    color: #284352;
+    font-size: 0.8em;
+}
+
+.editIMG{
+    color: #284352;
+    position: relative;
+    top: -9em;
+    left: 5em;
+    z-index: 10!important;
+}
+
+.hidden{
+    display: none;
 }
