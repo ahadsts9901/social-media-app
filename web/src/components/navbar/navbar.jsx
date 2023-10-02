@@ -1,9 +1,9 @@
-import { ChatDots, ChatDotsFill, House, HouseFill, Person, PersonFill, Controller, Search as SearchBS, Bell, BellFill, PlusCircle, PlusCircleFill } from 'react-bootstrap-icons';
+import { ChatDots, House, HouseFill, Person, PersonFill, Controller, Search as SearchBS, Bell, BellFill, PlusCircle, PlusCircleFill, PersonLinesFill } from 'react-bootstrap-icons';
 import { useEffect, useContext } from 'react';
 import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
 import { GlobalContext } from '../../context/context';
 import './navbar.css';
-import logo from '../assets/logoDark.png';
+// import logo from '../assets/logoDark.png';
 import axios from 'axios';
 
 const Navbar = () => {
@@ -48,6 +48,10 @@ const Navbar = () => {
                     <Link to={`/chat`}>
                         <ChatDots className="navIcons" />
                     </Link>
+                    {(state.isAdmin === true || state.isAdmin === "true") ?
+                        <Link to={`/admin`}>
+                            <PersonLinesFill className="navIcons" />
+                        </Link> : null}
                 </div>
             </div>
             <div className="navbarBottom">
@@ -59,28 +63,28 @@ const Navbar = () => {
                     )}
                 </Link>
                 <Link to="/games">
-                    {location.pathname === '/games' ? (
+                    {location.pathname === '/games' || location.pathname === '/games/' ? (
                         <Controller className="navIcons active" />
                     ) : (
                         <Controller className="navIcons" />
                     )}
                 </Link>
                 <Link to="/create">
-                    {location.pathname === '/create' ? (
+                    {location.pathname === '/create' || location.pathname === '/create/' ? (
                         <PlusCircleFill className="add active" />
                     ) : (
                         <PlusCircle className="add" />
                     )}
                 </Link>
                 <Link to="/notifications">
-                    {location.pathname === '/notifications' ? (
+                    {location.pathname === '/notifications' || location.pathname === '/notifications/' ? (
                         <BellFill className="navIcons active" />
                     ) : (
                         <Bell className="navIcons" />
                     )}
                 </Link>
                 <Link to="/profile">
-                    {location.pathname === '/profile' ? (
+                    {location.pathname === '/profile' || location.pathname === '/profile/' ? (
                         <PersonFill className="navIcons active" />
                     ) : (
                         <Person className="navIcons" />

@@ -1,6 +1,7 @@
 import "./post.css";
 import moment from "moment";
 import { useState } from "react";
+import {Search as SearchBS} from "react-bootstrap-icons"
 
 const Post = (props) => {
     const [showFullPost, setShowFullPost] = useState(false);
@@ -50,7 +51,11 @@ const Post = (props) => {
 };
 
 const NoPost = () => {
+    return (<h2 className="noPostsMessage"> <SearchBS/> Search Posts...</h2>)
+};
+
+const SearchPost = () => {
     return (<h2 className="noPostsMessage">No post found...</h2>)
 };
 
-export { Post, NoPost };
+export { Post, NoPost, SearchPost };

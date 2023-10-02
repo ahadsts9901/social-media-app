@@ -131,7 +131,7 @@ postForm {
     padding: 0.5em 1em !important;
     margin: 0em !important;
     border-radius: 5px !important;
-    width: 100%!important;
+    width: 8em !important;
 }
 
 .logOutButton:active {
@@ -234,13 +234,23 @@ postForm {
 
 .result {
     display: flex;
-    justify-content: center;
+    flex-direction: column !important;
+    justify-content: right !important;
+    align-items: center;
     gap: 1em;
-    flex-wrap: wrap;
+    padding: 0em !important;
     width: 100%;
-    /* border: 2px solid #e8f0ff; */
-    padding: 1em 0em;
-    color: #284352;
+    height: 100%;
+    flex-wrap: nowrap !important;
+}
+
+.noPostMessage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    gap: 1em;
 }
 
 .post {
@@ -456,12 +466,12 @@ h2.green {
     align-items: center;
     margin: 0 !important;
     gap: 1em;
-    background-color: #fff;
-    width: 95% !important;
+    background-color: #efefef;
     padding: 0.5em;
-    border-radius: 8px;
-    margin: 0em auto !important;
-    margin-top: 1em;
+    border-radius: 0px!important;
+    margin: 0em!important;
+    width: 100%!important;
+    padding-top: 1em;
 }
 
 .search>*:focus,
@@ -591,10 +601,10 @@ div:where(.swal2-container) div:where(.swal2-loader) {
     height: 6em;
     object-fit: cover;
     border-radius: 100%;
-    border: 0px!important;
+    border: 0px !important;
 }
 
-.profile{
+.profile {
     display: flex;
     justify-content: right;
     align-items: start;
@@ -605,19 +615,19 @@ div:where(.swal2-container) div:where(.swal2-loader) {
     position: static;
 }
 
-.editName{
+.editName {
     color: #284352;
     font-size: 0.8em;
 }
 
-.editIMG{
+.editIMG {
     color: #284352;
     position: relative;
     top: -9em;
     left: 5em;
-    z-index: 10!important;
+    z-index: 10 !important;
 }
 
-.hidden{
+.hidden {
     display: none;
 }

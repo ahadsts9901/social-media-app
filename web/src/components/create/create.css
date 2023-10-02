@@ -458,7 +458,7 @@ h2.green {
     width: 82% !important;
     padding: 0.5em;
     border-radius: 8px;
-    margin: 0em auto !important;
+    margin: 0!important;
 }
 
 .search>*:focus,

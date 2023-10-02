@@ -37,9 +37,21 @@ h6 {
 
 .result{
     display: flex;
-    flex-direction: column;
-    justify-content: right;
+    flex-direction: column!important;
+    justify-content: right!important;
     align-items: center;
     gap: 1em;
     padding: 0em!important;
+    width: 100%;
+    height: 100%;
+    flex-wrap: nowrap!important;
+}
+
+.noPostMessage{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    gap: 1em;
 }

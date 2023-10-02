@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import './profile.css';
-import { UserPost, NoPost } from '../userPost/userPost';
+import { UserPost } from '../userPost/userPost';
 import { useNavigate } from 'react-router-dom';
 import { GlobalContext } from '../../context/context';
 import { PencilFill } from 'react-bootstrap-icons'
@@ -192,7 +192,7 @@ const Profile = () => {
 
       <div className="result">
         {userPosts.length === 0 ? (
-          <NoPost />
+          <h2 className='noPostMessage'> No post found . . . </h2>
         ) : (
           userPosts.map((post, index) => (
             <UserPost key={index} title={post.title} text={post.text} time={post.time} postId={post._id} del={deletePost} edit={editPost} />

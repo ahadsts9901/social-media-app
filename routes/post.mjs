@@ -195,7 +195,7 @@ router.get("/search", async (req, res) => {
             .aggregate([
                 {
                     $search: {
-                        index: "weapp",
+                        index: "we_app",
                         knnBeta: {
                             vector: vector,
                             path: "embedding",

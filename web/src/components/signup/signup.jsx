@@ -8,7 +8,7 @@ import { GlobalContext } from "../../context/context"
 
 const Signup = () => {
 
-  const {state, dispatch} = useContext(GlobalContext);
+  const { state, dispatch } = useContext(GlobalContext);
 
   const [validationMessage, setValidationMessage] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -27,7 +27,7 @@ const Signup = () => {
   };
 
   // Handle form submission
-  const signup = (event) => {
+  const signup = async (event) => {
     event.preventDefault();
 
     const firstName = firstNameRef.current.value;
@@ -57,30 +57,32 @@ const Signup = () => {
       return;
     }
 
-    axios
-      .post(`/api/v1/signup`, {
+    try {
+      const response = await axios.post(`/api/v1/signup`, {
         firstName: firstName,
         lastName: lastName,
         email: email,
         password: password,
         confirmPassword: confirmPassword,
       },
-      )
-      .then(function (response) {
-        setValidationMessage('Signup Successfull');
+        {
+          withCredentials: true,
+        });;
 
-        dispatch({
-          type: "USER_LOGIN",
-          payload: response.data.data,
-        });
+      setValidationMessage('Signup Successfull');
 
-        // navigate('/');
-        window.location.pathname = "/"
-      })
-      .catch(function (error) {
-        console.log(error.data);
-        setValidationMessage('User Already Exists');
+      dispatch({
+        type: "USER_LOGIN",
+        payload: response.data.data,
       });
+
+      // navigate('/');
+      window.location.pathname = "/";
+    } catch (error) {
+      console.log(error.response.data);
+      setValidationMessage('User Already Exists');
+    }
+
 
     // Reset the input fields after successful signup
     firstNameRef.current.value = '';

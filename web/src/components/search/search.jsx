@@ -1,12 +1,13 @@
 import React
-  , { useState, useRef }
+, { useState, useRef }
   from 'react';
 import axios from 'axios';
 // import Swal from 'sweetalert2';
 import './search.css';
 import '../main.css'
-// import { Link, useNavigate } from 'react-router-dom';
 // import logo from "../assets/logoDark.png"
+import { Search as SearchBS, ArrowLeft } from "react-bootstrap-icons"
+import { Post } from "../post/post"
 
 const Search = () => {
 
@@ -17,7 +18,7 @@ const Search = () => {
     e.preventDefault();
     try {
       const response = await axios.get(`/api/v1/search?q=${searchInputRef.current.value}`);
-      console.log(response.data);
+      // console.log(response.data);
 
       setPosts([...response.data]);
     } catch (error) {
@@ -27,12 +28,24 @@ const Search = () => {
   };
 
   return (
-    <form className='search postForm' onSubmit={search}>
-      <input required type="search" placeholder="Search Here..." className="searchInput" ref={searchInputRef} />
-      <button type="submit" className="postButton searchButton">
-        Search
-      </button>
-    </form>
+    <div className="searchCont">
+      <form className='search postForm' onSubmit={search}>
+        <button type='button' className='searchButton' onClick={() => { window.history.back() }}><ArrowLeft /></button>
+        <input required type="search" placeholder="Search Here..." className="searchInput" ref={searchInputRef} />
+        <button type="submit" className="postButton searchButton">
+          <SearchBS />
+        </button>
+      </form>
+      <div className="searchResult">
+        {posts.length === 0 ? (
+          <h2 className='noPostMessage'> <SearchBS/> Search Post . . . </h2>
+        ) : (
+          posts.map((post, index) => (
+            <Post key={index} title={post.title} text={post.text} time={post.time} postId={post._id} />
+          ))
+        )}
+      </div>
+    </div>
   )
 };
 

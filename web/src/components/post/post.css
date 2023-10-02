@@ -77,6 +77,7 @@ h6 {
     font-size: 0.7em !important;
     color: #999;
     word-wrap: break-word !important;
+    width: 100%;
 }
 
 .textContainer {
@@ -146,7 +147,9 @@ h6 {
 
 .bigText {
     font-size: 1.5em;
-    text-align: center !important;
+    text-align: center;
+    overflow-y: auto;
+    overflow-x: auto;
     min-height: 10em;
     display: flex;
     justify-content: center;
@@ -156,6 +159,14 @@ h6 {
     background: rgb(98, 152, 148) !important;
     background: linear-gradient(306deg, rgba(98, 152, 148, 1) 0%, rgba(40, 70, 82, 1) 71%) !important;
     word-wrap: break-word !important;
+}
+
+.bigText::-moz-scrollbar {
+    display: none;
+}
+
+.bigText::-webkit-scrollbar {
+    display: none;
 }
 
 .smallText {

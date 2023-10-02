@@ -11,7 +11,10 @@ import '../main.css'
 const Notifications = () => {
 
   return (
-  <div>Notifications</div>  
+    <div className='test'>
+    <h2>Notifications</h2>
+    <h2>Under Construction</h2>
+    </div>   
   )
 };
 

@@ -41,7 +41,7 @@ const Home = () => {
   return (
     <div className="result">
       {posts.length === 0 ? (
-        <NoPost />
+        <h2 className='noPostMessage'> No post found . . . </h2>
       ) : (
         posts.map((post, index) => (
           <Post key={index} title={post.title} text={post.text} time={post.time} postId={post._id} />

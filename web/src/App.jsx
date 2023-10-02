@@ -8,10 +8,11 @@ import Notifications from './components/notifications/notifications.jsx';
 import Create from './components/create/create.jsx';
 import Profile from './components/profile/profile.jsx';
 import Navbar from './components/navbar/navbar'
+import Admin from './components/admin/admin'
 
 
 import { useEffect, useContext } from 'react';
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { GlobalContext } from "./context/context"
 
 import "./App.css"
@@ -21,6 +22,8 @@ import axios from "axios"
 const App = () => {
 
     const { state, dispatch } = useContext(GlobalContext);
+
+    const location = useLocation()
 
     useEffect(() => {
         const checkLoginStatus = async () => {
@@ -46,29 +49,52 @@ const App = () => {
         checkLoginStatus();
     }, []);
 
+    const isSearchOrChatRoute =
+        location.pathname === '/search' || location.pathname === '/chat' || location.pathname === '/search/' || location.pathname === '/chat/';
+
     return (
         <div className='div'>
-
             {/* <div>{JSON.stringify(state)}</div> */}
             {/* user routes */}
-            {state.isLogin === true && state.isAdmin === false ?(
-            <>
-                <Navbar />
+            {state.isLogin === true && (state.isAdmin === "false" || state.isAdmin === false) ? (
+                <>
+                    {isSearchOrChatRoute ? null : <Navbar />}
 
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/chat" element={<Chat />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/search" element={<Search />} />
-                    <Route path="/create" element={<Create />} />
-                    <Route path="/notifications" element={<Notifications />} />
-                    <Route path="/games" element={<Games />} />
-                    <Route path="*" element={<Navigate to="/" replace={true} />} />
-                </Routes>
-            </>
-            ): null } 
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/chat" element={<Chat />} />
+                        <Route path="/search" element={<Search />} />
+                        <Route path="/create" element={<Create />} />
+                        <Route path="/notifications" element={<Notifications />} />
+                        <Route path="/games" element={<Games />} />
+                        <Route path="*" element={<Navigate to="/" replace={true} />} />
+                    </Routes>
+
+                </>
+            ) : null}
+
+            {state.isLogin === true && (state.isAdmin === "true" || state.isAdmin === true) ? (
+                <>
+                    {isSearchOrChatRoute ? null : <Navbar />}
+
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/chat" element={<Chat />} />
+                        <Route path="/search" element={<Search />} />
+                        <Route path="/create" element={<Create />} />
+                        <Route path="/notifications" element={<Notifications />} />
+                        <Route path="/games" element={<Games />} />
+                        <Route path="/admin" element={<Admin />} />
+                        <Route path="*" element={<Navigate to="/" replace={true} />} />
+                    </Routes>
+
+                </>
+            ): null}
 
             {/* unAuth routes */}
+
             {state.isLogin === false ? (
                 <>
                     <Routes>

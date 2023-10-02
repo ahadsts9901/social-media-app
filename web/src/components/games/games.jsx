@@ -11,7 +11,10 @@ import '../main.css'
 const Games = () => {
 
   return (
-  <div>Games</div>  
+  <div className='test'>
+    <h2>Games</h2>
+    <h2>Under Construction</h2>
+    </div>  
   )
 };
 
