@@ -1,6 +1,6 @@
 import { ChatDots, House, HouseFill, Person, PersonFill, Controller, Search as SearchBS, Bell, BellFill, PlusCircle, PlusCircleFill, PersonLinesFill } from 'react-bootstrap-icons';
 import { useEffect, useContext } from 'react';
-import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { GlobalContext } from '../../context/context';
 import './navbar.css';
 // import logo from '../assets/logoDark.png';
