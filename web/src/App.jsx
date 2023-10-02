@@ -51,7 +51,7 @@ const App = () => {
 
             {/* <div>{JSON.stringify(state)}</div> */}
             {/* user routes */}
-            {/* {state.isLogin === true && state.isAdmin === false ?( */}
+            {state.isLogin === true && state.isAdmin === false ?(
             <>
                 <Navbar />
 
@@ -66,7 +66,7 @@ const App = () => {
                     <Route path="*" element={<Navigate to="/" replace={true} />} />
                 </Routes>
             </>
-            {/* // ): null} */}
+            ): null } 
 
             {/* unAuth routes */}
             {state.isLogin === false ? (
