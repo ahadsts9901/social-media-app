@@ -55,6 +55,7 @@ router.post('/login', async(req, res, next) => {
                 res.cookie('token', token, {
                     httpOnly: true,
                     secure: true,
+                    expires: new Date(Date.now() + 86400000)
                 });
 
                 res.send({
@@ -119,6 +120,7 @@ router.post('/signup', async(req, res, next) => {
             res.cookie('token', token, {
                 httpOnly: true,
                 secure: true,
+                expires: new Date(Date.now() + 86400000)
             });
 
             // Send a response
