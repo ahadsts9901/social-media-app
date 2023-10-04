@@ -1,4 +1,4 @@
-import { ChatDots, House, HouseFill, Person, PersonFill, Controller, Search as SearchBS, Bell, BellFill, PlusCircle, PlusCircleFill, PersonLinesFill } from 'react-bootstrap-icons';
+import { ChatDots, House, HouseFill, Person, PersonFill, Controller, Search as SearchBS, Bell, BellFill, PlusCircle, PlusCircleFill, PersonLock, PersonFillLock } from 'react-bootstrap-icons';
 import { useEffect, useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { GlobalContext } from '../../context/context';
@@ -49,9 +49,21 @@ const Navbar = () => {
                         <ChatDots className="navIcons" />
                     </Link>
                     {(state.isAdmin === true || state.isAdmin === "true") ?
+
                         <Link to={`/admin`}>
-                            <PersonLinesFill className="navIcons" />
-                        </Link> : null}
+                            {location.pathname === '/admin' || location.pathname === '/admin/' ? (
+                                <PersonFillLock className="navIcons" />
+                            ) : (
+                                <PersonLock className="navIcons" />
+                            )}
+                        </Link>
+
+                        // <Link to={`/admin`}>
+                        //     <PersonLinesFill className="navIcons" />
+                        // </Link> 
+
+
+                        : null}
                 </div>
             </div>
             <div className="navbarBottom">

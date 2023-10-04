@@ -11,7 +11,7 @@ import "dotenv/config"
 const db = client.db("weapp")
 const col = db.collection("auth")
 
-router.post('/login', async(req, res, next) => {
+router.post('/login', async (req, res, next) => {
 
     if (!req.body.email ||
         !req.body.password
@@ -76,7 +76,7 @@ router.post('/login', async(req, res, next) => {
     }
 })
 
-router.post('/signup', async(req, res, next) => {
+router.post('/signup', async (req, res, next) => {
 
     if (!req.body.firstName ||
         !req.body.lastName ||
@@ -139,7 +139,7 @@ router.post('/signup', async(req, res, next) => {
 });
 
 
-router.post("/logout", async(req, res, next) => {
+router.post("/logout", async (req, res, next) => {
     res.cookie('token', "", {
         httpOnly: true,
         secure: true,

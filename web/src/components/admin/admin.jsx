@@ -135,13 +135,13 @@ const Admin = () => {
     <div className='posts adminPosts'>
       <h2 className="adminHeading">Admin Dashboard</h2>
       <div className="result">
-        {adminPosts.length === 0 ? (
-          <h1 className='noPostMessage'> No post found . . . </h1>
+        {!adminPosts ? <h2 className='noPostMesage'>No Post Found</h2> : (adminPosts.length === 0 ? (
+          <div className="loadContainer"><span class="loader"></span></div>
         ) : (
           adminPosts.map((post, index) => (
             <UserPost key={index} title={post.title} text={post.text} time={post.time} postId={post._id} del={deletePost} edit={editPost} />
           ))
-        )}
+        ))}
       </div>
     </div>
   );

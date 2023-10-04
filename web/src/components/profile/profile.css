@@ -244,7 +244,8 @@ postForm {
     flex-wrap: nowrap !important;
 }
 
-.noPostMessage {
+.noPostMessage,
+.loadContainer {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -468,9 +469,9 @@ h2.green {
     gap: 1em;
     background-color: #efefef;
     padding: 0.5em;
-    border-radius: 0px!important;
-    margin: 0em!important;
-    width: 100%!important;
+    border-radius: 0px !important;
+    margin: 0em !important;
+    width: 100% !important;
     padding-top: 1em;
 }
 
@@ -630,4 +631,27 @@ div:where(.swal2-container) div:where(.swal2-loader) {
 
 .hidden {
     display: none;
+}
+
+/* loader */
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #284352;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }

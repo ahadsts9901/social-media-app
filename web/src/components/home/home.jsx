@@ -40,13 +40,13 @@ const Home = () => {
 
   return (
     <div className="result">
-      {posts.length === 0 ? (
-        <h2 className='noPostMessage'> No post found . . . </h2>
+      {!posts ? <h2 className='noPostMessage'> No Post Found </h2> : (posts.length === 0 ? (
+        <div className="loadContainer"><span class="loader"></span></div>
       ) : (
         posts.map((post, index) => (
           <Post key={index} title={post.title} text={post.text} time={post.time} postId={post._id} />
         ))
-      )}
+      ))}
     </div>
   );
 };

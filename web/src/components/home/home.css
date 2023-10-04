@@ -17,10 +17,11 @@ body {
     height: 100vh;
 }
 
-#root, .div{
+#root,
+.div {
     width: 100%;
     height: 100%;
-    padding: 0em!important;
+    padding: 0em !important;
 }
 
 i,
@@ -35,23 +36,46 @@ h6 {
     margin: 0em !important;
 }
 
-.result{
+.result {
     display: flex;
-    flex-direction: column!important;
-    justify-content: right!important;
+    flex-direction: column !important;
+    justify-content: right !important;
     align-items: center;
     gap: 1em;
-    padding: 0em!important;
+    padding: 0em !important;
     width: 100%;
     height: 100%;
-    flex-wrap: nowrap!important;
+    flex-wrap: nowrap !important;
 }
 
-.noPostMessage{
+.noPostMessage, .loadContainer {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     height: 100%;
     gap: 1em;
+}
+
+/* loaders */
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #284352;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }

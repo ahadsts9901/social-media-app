@@ -14,6 +14,7 @@ const Login = () => {
 
   const [email, setEmail] = useState('');
   const [validationMessage, setValidationMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [isShowPassword, setShowPassword] = useState(false);
 
   const passwordRef = useRef(null);
@@ -26,11 +27,13 @@ const Login = () => {
 
     if (!email.endsWith("@gmail.com")) {
       setValidationMessage("Invalid email address");
+      setSuccessMessage("")
       return;
     }
 
     if (email.trim() === '' || passwordRef.current.value.trim() === '') {
       setValidationMessage("Please fill required fields");
+      setSuccessMessage("")
       return;
     }
 
@@ -49,10 +52,12 @@ const Login = () => {
       });
 
       console.log("login successfully");
-      setValidationMessage('Login Successfull');
+      setSuccessMessage('Login Successfull');
+      setValidationMessage("")
       window.location.pathname = "/"
     } catch (error) {
       setValidationMessage('Email or Password incorrect');
+      setSuccessMessage("")
       console.log("Email or Password incorrect");
       console.error(error.data);
     }
@@ -103,6 +108,7 @@ const Login = () => {
         </div>
         {/* <p className='forget'>Forgot Password</p> */}
         <p className="validationMessage">{validationMessage}</p>
+        <p className="successMessage">{successMessage}</p>
         <button type="submit" className="button">
           Login
         </button>

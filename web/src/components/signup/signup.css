@@ -364,7 +364,16 @@ div:where(.swal2-container) div:where(.swal2-loader) {
 
 .validationMessage {
     /* display: none; */
-    color: #d53333 !important;
+    color: #ca3030 !important;
+    font-size: 1.2em !important;
+    width: 100%;
+    padding: 0 0.3em;
+    text-align: center;
+}
+
+.successMessage {
+    /* display: none; */
+    color: #155520 !important;
     font-size: 1.2em !important;
     width: 100%;
     padding: 0 0.3em;
@@ -485,5 +494,24 @@ form {
 
     .login-signup {
         min-width: 100%;
+    }
+}
+
+@media only screen and (max-width:425px) {
+
+    body::-moz-scrollbar {
+        display: none!important;
+    }
+    
+    body::-webkit-scrollbar {
+        display: none!important;
+    }
+    
+    #root::-moz-scrollbar {
+        display: none!important;
+    }
+    
+    #root::-webkit-scrollbar {
+        display: none!important;
     }
 }

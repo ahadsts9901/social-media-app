@@ -11,6 +11,7 @@ const Signup = () => {
   const { state, dispatch } = useContext(GlobalContext);
 
   const [validationMessage, setValidationMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const firstNameRef = useRef(null);
@@ -38,6 +39,7 @@ const Signup = () => {
 
     if (!email.endsWith("@gmail.com")) {
       setValidationMessage("Invalid email address");
+      setSuccessMessage("")
       return;
     }
 
@@ -49,11 +51,13 @@ const Signup = () => {
       confirmPassword.trim() === ''
     ) {
       setValidationMessage("Please fill required fields");
+      setSuccessMessage("")
       return;
     }
 
     if (password !== confirmPassword) {
       setValidationMessage("Passwords do not match");
+      setSuccessMessage("")
       return;
     }
 
@@ -69,7 +73,8 @@ const Signup = () => {
           withCredentials: true,
         });;
 
-      setValidationMessage('Signup Successfull');
+      setValidationMessage("");
+      setSuccessMessage("Signup Successfull")
 
       dispatch({
         type: "USER_LOGIN",
@@ -81,6 +86,7 @@ const Signup = () => {
     } catch (error) {
       console.log(error.response.data);
       setValidationMessage('User Already Exists');
+      setSuccessMessage("")
     }
 
 
@@ -166,6 +172,7 @@ const Signup = () => {
           />
         </div>
         <p className="validationMessage">{validationMessage}</p>
+        <p className="successMessage">{successMessage}</p>
         <button type="submit" className="button">
           Sign Up
         </button>

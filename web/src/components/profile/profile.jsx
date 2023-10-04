@@ -191,13 +191,13 @@ const Profile = () => {
       </div>
 
       <div className="result">
-        {userPosts.length === 0 ? (
-          <h2 className='noPostMessage'> No post found . . . </h2>
+        {!userPosts ? <h2 className="noPostMessage">No Post Found</h2> : (userPosts.length === 0 ? (
+          <div className="loadContainer"><span class="loader"></span></div>
         ) : (
           userPosts.map((post, index) => (
             <UserPost key={index} title={post.title} text={post.text} time={post.time} postId={post._id} del={deletePost} edit={editPost} />
           ))
-        )}
+        ))}
       </div>
     </div>
   );
