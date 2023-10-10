@@ -9,10 +9,11 @@ import Create from './components/create/create.jsx';
 import Profile from './components/profile/profile.jsx';
 import Navbar from './components/navbar/navbar'
 import Admin from './components/admin/admin'
+import UnAuthNavbar from './components/unAuthNavbar/unAuthNavbar';
 
 
 import { useEffect, useContext } from 'react';
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation, useParams } from "react-router-dom";
 import { GlobalContext } from "./context/context"
 
 import "./App.css"
@@ -26,23 +27,34 @@ const App = () => {
     const location = useLocation()
 
     useEffect(() => {
+        axios.interceptors.request.use(
+            function (config) {
+                config.withCredentials = true;
+                return config;
+            },
+            function (error) {
+                // Do something with request error
+                return Promise.reject(error);
+            }
+        );
+    }, []);
+
+    useEffect(() => {
         const checkLoginStatus = async () => {
             try {
-                const resp = await axios.get(`/api/v1/profile`, {
+                const resp = await axios.get(`/api/v1/ping`, {
                     withCredentials: true,
                 });
                 dispatch({
                     type: "USER_LOGIN",
                     payload: resp.data.data,
                 });
-                state.isLogin = true
-                state.isAdmin = resp.data.data.isAdmin
+
             } catch (err) {
-                console.log(err);
+                console.error(err);
                 dispatch({
                     type: "USER_LOGOUT",
                 });
-                state.isLogin = false
             }
         };
 
@@ -55,14 +67,15 @@ const App = () => {
     return (
         <div className='div'>
             {/* <div>{JSON.stringify(state)}</div> */}
+            {/* {console.log(state)} */}
             {/* user routes */}
-            {state.isLogin === true && (state.isAdmin === "false" || state.isAdmin === false) ? (
+            {state.isLogin === true && state.user.isAdmin === false ? (
                 <>
                     {isSearchOrChatRoute ? null : <Navbar />}
 
                     <Routes>
                         <Route path="/" element={<Home />} />
-                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/profile/:userParamsId" element={<Profile />} />
                         <Route path="/chat" element={<Chat />} />
                         <Route path="/search" element={<Search />} />
                         <Route path="/create" element={<Create />} />
@@ -74,13 +87,13 @@ const App = () => {
                 </>
             ) : null}
 
-            {state.isLogin === true && (state.isAdmin === "true" || state.isAdmin === true) ? (
+            {state.isLogin === true && state.user.isAdmin === true ? (
                 <>
                     {isSearchOrChatRoute ? null : <Navbar />}
 
                     <Routes>
                         <Route path="/" element={<Home />} />
-                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/profile/:userParamsId" element={<Profile />} />
                         <Route path="/chat" element={<Chat />} />
                         <Route path="/search" element={<Search />} />
                         <Route path="/create" element={<Create />} />
@@ -91,15 +104,22 @@ const App = () => {
                     </Routes>
 
                 </>
-            ): null}
+            ) : null}
 
             {/* unAuth routes */}
 
             {state.isLogin === false ? (
                 <>
+                    {<UnAuthNavbar />}
                     <Routes>
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<Signup />} />
+
+                        {/* un Auth Routes */}
+
+                        {/* <Route path="/" element={<Home />} /> */}
+                        <Route path="/profile/:userParamsId" element={<Profile />} />
+
                         <Route path="*" element={<Navigate to="/login" replace={true} />} />
                     </Routes>
                 </>

@@ -15,6 +15,7 @@ const Create = () => {
     event.preventDefault();
 
     const userLogEmail = `${state.user.email}`
+    const userId = `${state.user.userId}`
     // console.log(userLogEmail)
     const postTitle = `${state.user.firstName} ${state.user.lastName}`;
     const postText = document.querySelector("#text");
@@ -25,6 +26,7 @@ const Create = () => {
         title: postTitle,
         text: postText.value,
         email: userLogEmail,
+        userId: userId,
       })
       .then(function (response) {
         // console.log(response.data);

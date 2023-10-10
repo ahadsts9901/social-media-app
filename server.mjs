@@ -9,11 +9,38 @@ import postRouter from './routes/post.mjs'
 import cookieParser from 'cookie-parser'
 // import { decode } from 'punycode';
 
+import unAuthProfileRouter from "./unAuthRoutes/profile.mjs"
+
 const app = express();
 app.use(express.json()); // body parser
 app.use(cookieParser()); // cookie parser
 
 app.use("/api/v1", authRouter)
+
+// app.use("/api/v1", (req, res, next) => {
+//     console.log("cookies: ", req.cookies);
+
+//     const token = req.cookies.token;
+
+//     try {
+//         const decoded = jwt.verify(token, process.env.SECRET);
+//         console.log("decoded: ", decoded);
+
+//         req.body.decoded = {
+//             firstName: decoded.firstName,
+//             lastName: decoded.lastName,
+//             email: decoded.email,
+//             isAdmin: decoded.isAdmin,
+//         };
+
+//         next();
+
+//     } catch (err) {
+//         console.error(err)
+//         return;
+//     }
+
+// })
 
 app.use("/api/v1", (req, res, next) => {
     console.log("cookies: ", req.cookies);
@@ -34,10 +61,10 @@ app.use("/api/v1", (req, res, next) => {
         next();
 
     } catch (err) {
-        res.status(401).send(`not logged in`)
+        unAuthProfileRouter(req, res)
+        return;
     }
-
-})
+});
 
 
 app.use("/api/v1", postRouter)
@@ -46,7 +73,7 @@ app.use(express.static(path.join(__dirname, 'web/build')))
 app.get(express.static(path.join(__dirname, 'web/build')))
 app.use("*", express.static(path.join(__dirname, 'web/build')))
 
-app.use("/api/v1/profile", (req, res) => {
+app.get("/api/v1/ping", (req, res) => {
     res.send("OK");
 })
 
