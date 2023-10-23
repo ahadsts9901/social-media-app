@@ -39,6 +39,11 @@ const App = () => {
                 return Promise.reject(error);
             }
         );
+
+        return () => {
+            // cleanup function
+          };
+
     }, []);
 
     useEffect(() => {
@@ -61,6 +66,11 @@ const App = () => {
         };
 
         checkLoginStatus();
+
+        return () => {
+            // cleanup function
+          };
+
     }, []);
 
     const isSearchOrChatRoute =
@@ -116,7 +126,7 @@ const App = () => {
 
             {state.isLogin === false ? (
                 <>
-                    {(window.location.pathname.startsWith("/profile") || window.location.pathname.startsWith("/post")) ? <UnAuthNavbar /> : null}
+                    {(window.location.pathname.startsWith("/profile") || window.location.pathname.startsWith("/post") || window.location.pathname.startsWith("/likes")) ? <UnAuthNavbar /> : null}
                     <Routes>
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<Signup />} />

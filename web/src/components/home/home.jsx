@@ -18,6 +18,11 @@ const Home = () => {
 
   useEffect(() => {
     renderPost();
+
+    return () => {
+      // cleanup function
+    };
+
   }, [me]);
 
   const renderPost = () => {

@@ -1,21 +1,22 @@
 .singlePostCont{
-    width: 100%;
+    width: 425px;
     display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: center;
-    gap: 1em;
-    padding: 1em 0em;
+    padding: 0.5em 0em;
+    margin: 0 auto;
 }
 
 .commentSection{
-    font-size: 1.5em!important;
+    font-size: 1.2em!important;
     width: 100%;
     height: 100%;
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding:1em;
 }
 
 .seeWhoLiked{
@@ -23,7 +24,15 @@
     text-align: left;
     font-size: 0.8em;
     cursor: pointer;
-    padding-left: 1em;
+    padding: 1em;
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+}
+
+.backArrow{
+    width: 100%;
+    padding: 0.5em;
+    display: flex;
 }
 
 .loader {
@@ -48,6 +57,10 @@
 
 @media only screen and (max-width: 425px){
     .seeWhoLiked{
+        width: 100%;
+    }
+
+    .singlePostCont{
         width: 100%;
     }
 }

@@ -14,6 +14,11 @@ const Admin = () => {
 
   useEffect(() => {
     renderAdminPost();
+
+    return () => {
+      // cleanup function
+    };
+
   }, []);
 
   const renderAdminPost = () => {

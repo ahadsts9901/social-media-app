@@ -21,8 +21,12 @@ const Profile = () => {
   useEffect(() => {
     renderCurrentUserPost();
     getProfile()
-  }, [
-    userParamsId]);
+
+    return () => {
+      // cleanup function
+    };
+
+  }, [userParamsId]);
 
   const renderCurrentUserPost = () => {
     axios.get(`/api/v1/posts/${userParamsId || ""}`)

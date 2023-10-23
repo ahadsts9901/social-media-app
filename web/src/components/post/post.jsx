@@ -21,6 +21,11 @@ const Post = (props) => {
     );
 
     setIsLike(userHasLiked);
+
+    return () => {
+      // cleanup function
+    };
+
   }, [props.likedBy, state.user.userId]);
 
   const [showFullPost, setShowFullPost] = useState(false);

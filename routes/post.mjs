@@ -40,7 +40,8 @@ router.post('/post', async (req, res, next) => {
 //GET  ALL   POSTS   /api/v1/post/:postId
 router.get('/feed', async (req, res, next) => {
     try {
-        const cursor = col.find({}).sort({ _id: -1 });
+        const projection = {_id :1, title:1, text:1, time:1, userId:1, likes:1, }
+        const cursor = col.find({}).sort({ _id: -1 }).project(projection);
         let results = await cursor.toArray();
 
         console.log(results);
@@ -58,6 +59,7 @@ router.get('/post/:postId', async (req, res, next) => {
     const postId = new ObjectId(req.params.postId);
 
     try {
+        // const projection = {_id :1, title:1, text:1, time:1, userId:1, likes:1, }
         const post = await col.findOne({ _id: postId });
 
         if (post) {
@@ -141,7 +143,8 @@ router.get('/posts/:userId', async (req, res, next) => {
     }
 
     try {
-        const cursor = col.find({ userId: new ObjectId(userId) }).sort({ _id: -1 });
+        const projection = {_id :1, title:1, text:1, time:1, userId:1, likes:1, }
+        const cursor = col.find({ userId: new ObjectId(userId) }).sort({ _id: -1 }).project(projection);
         const results = await cursor.toArray();
 
         console.log(results);
@@ -246,6 +249,13 @@ router.get("/search", async (req, res) => {
                         scoreDetails: true,
                     },
                 },
+                {
+                    $project: {
+                        embedding: 0,
+                        score: { "$meta": "searchScore" },
+                        scoreDetails: { "$meta": "searchScoreDetails" }
+                    }
+                }
             ])
             .toArray();
 
@@ -313,6 +323,29 @@ router.delete('/post/:postId/undolike', async (req, res) => {
         res.status(200).send('Like removed successfully');
     } catch (error) {
         console.error('Error removing like:', error);
+        res.status(500).send('Server error, please try later');
+    }
+});
+
+router.get('/likes/:postId', async (req, res, next) => {
+    const postId = req.params.postId;
+
+    if (!ObjectId.isValid(postId)) {
+        res.status(403).send(`Invalid post id`);
+        return;
+    }
+
+    try {
+        let result = await col.findOne({ _id: new ObjectId(postId) });
+
+        if (result) {
+            console.log("result: ", result);
+            res.status(200).send(result.likes);
+        } else {
+            res.status(404).send('Post not found');
+        }
+    } catch (e) {
+        console.log("error getting data from MongoDB: ", e);
         res.status(500).send('Server error, please try later');
     }
 });
