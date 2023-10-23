@@ -52,6 +52,9 @@ router.get('/feed', async (req, res, next) => {
 
 // GET  ONE   POST   /api/v1/posts/
 router.get('/post/:postId', async (req, res, next) => {
+
+    console.log(req.params.postId);
+
     const postId = new ObjectId(req.params.postId);
 
     try {
@@ -64,6 +67,7 @@ router.get('/post/:postId', async (req, res, next) => {
         }
     } catch (error) {
         console.error(error);
+        console.log(postId)
     }
 });
 

@@ -10,6 +10,8 @@ import Profile from './components/profile/profile.jsx';
 import Navbar from './components/navbar/navbar'
 import Admin from './components/admin/admin'
 import UnAuthNavbar from './components/unAuthNavbar/unAuthNavbar';
+import SinglePost from './components/singlePost/singlePost';
+import PostLikes from './components/postLikes/postLikes';
 
 
 import { useEffect, useContext } from 'react';
@@ -81,6 +83,8 @@ const App = () => {
                         <Route path="/create" element={<Create />} />
                         <Route path="/notifications" element={<Notifications />} />
                         <Route path="/games" element={<Games />} />
+                        <Route path="/post/:postId" element={<SinglePost />} />
+                        <Route path="/likes/post/:postId" element={<PostLikes />} />
                         <Route path="*" element={<Navigate to="/" replace={true} />} />
                     </Routes>
 
@@ -100,6 +104,8 @@ const App = () => {
                         <Route path="/notifications" element={<Notifications />} />
                         <Route path="/games" element={<Games />} />
                         <Route path="/admin" element={<Admin />} />
+                        <Route path="/post/:postId" element={<SinglePost />} />
+                        <Route path="/likes/post/:postId" element={<PostLikes />} />
                         <Route path="*" element={<Navigate to="/" replace={true} />} />
                     </Routes>
 
@@ -110,7 +116,7 @@ const App = () => {
 
             {state.isLogin === false ? (
                 <>
-                    {window.location.pathname.startsWith("/profile")? <UnAuthNavbar /> : null}
+                    {(window.location.pathname.startsWith("/profile") || window.location.pathname.startsWith("/post")) ? <UnAuthNavbar /> : null}
                     <Routes>
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<Signup />} />
@@ -119,6 +125,8 @@ const App = () => {
 
                         {/* <Route path="/" element={<Home />} /> */}
                         <Route path="/profile/:userParamsId" element={<Profile />} />
+                        <Route path="/post/:postId" element={<SinglePost />} />
+                        <Route path="/likes/post/:postId" element={<PostLikes />} />
 
                         <Route path="*" element={<Navigate to="/login" replace={true} />} />
                     </Routes>

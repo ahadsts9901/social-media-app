@@ -10,65 +10,6 @@ const userCollection = db.collection("auth");
 
 let router = express.Router()
 
-const initializeOpenAIClient = () => {
-    return new openai({
-        apiKey: process.env.OPENAI_API_KEY, // Replace with your OpenAI API key
-    });
-};
-
-router.get("/search", async (req, res) => {
-    const queryText = req.query.q;
-
-    try {
-        // Initialize the OpenAI client
-        const openaiClient = initializeOpenAIClient();
-
-        // Create an embedding for the query text
-        const response = await openaiClient.embeddings.create({
-            model: "text-embedding-ada-002",
-            input: queryText,
-        });
-
-        // Extract the vector from the response
-        const vector = response?.data[0]?.embedding;
-
-        // Perform a search using the vector
-        const documents = await col
-            .aggregate([
-                {
-                    $search: {
-                        index: "we_app",
-                        knnBeta: {
-                            vector: vector,
-                            path: "embedding",
-                            k: 10,
-                        },
-                        scoreDetails: true,
-                    },
-                },
-            ])
-            .toArray();
-
-        res.send(documents);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Error during search');
-    }
-});
-
-router.get('/feed', async (req, res, next) => {
-    try {
-        const cursor = col.find({}).sort({ _id: -1 });
-        let results = await cursor.toArray();
-
-        console.log(results);
-        res.send(results);
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-
 router.get('/profile/:userId', async (req, res, next) => {
 
     const userId = req.params.userId || req.body.decoded.userId
@@ -116,6 +57,26 @@ router.get('/posts/:userId', async (req, res, next) => {
     } catch (error) {
         console.error(error);
         res.status(500).send('Server error');
+    }
+});
+
+router.get('/post/:postId', async (req, res, next) => {
+
+    console.log(req.params.postId);
+
+    const postId = new ObjectId(req.params.postId);
+
+    try {
+        const post = await col.findOne({ _id: postId });
+
+        if (post) {
+            res.send(post);
+        } else {
+            res.status(404).send('Post not found with id ' + postId);
+        }
+    } catch (error) {
+        console.error(error);
+        console.log(postId)
     }
 });
 
