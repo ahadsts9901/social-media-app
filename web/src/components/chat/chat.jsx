@@ -1,25 +1,73 @@
-import React
-  // , { useState, useRef }
-  from 'react';
-// import axios from 'axios';
-// import Swal from 'sweetalert2';
-import './chat.css';
-import '../main.css'
-// import { Link, useNavigate } from 'react-router-dom';
-// import logo from "../assets/logoDark.png"
-import {ArrowLeft} from "react-bootstrap-icons"
+import React, { useEffect, useState, useContext } from 'react'
+import "./chat.css"
+import "../chatScreen/ChatScreen.css"
+import { ArrowLeft, ThreeDotsVertical, Search as SearchBs } from "react-bootstrap-icons"
+import SingleChatUser_ from '../singleChatUser/SingleChatUser_'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { GlobalContext } from '../../context/context';
 
 const Chat = () => {
 
+  
+  let { state, dispatch } = useContext(GlobalContext);
+
+  const [users, setUsers] = useState([])
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const allUsersChat = async () => {
+      axios.get(`/api/v1/chat`)
+        .then((response) => {
+          const allUsers = response.data;
+          setUsers(allUsers)
+          // console.log(allUsers);
+        })
+        .catch((error) => {
+          console.error('Axios error:', error);
+        });
+    };
+
+    allUsersChat();
+
+    return () => {
+      // cleanup function
+    };
+
+  }, []);
+
   return (
-    <div className='chatCont'>
-      <div className='test'>
-      <button type='button' className='searchButton' onClick={() => { window.history.back() }}><ArrowLeft /> Go Back</button>
-        <h2> Chat</h2>
-        <h2>Under Construction</h2>
+    <div className='chatUsers'>
+      <header>
+        <div className='headSect'>
+          <ArrowLeft onClick={() => { window.history.back() }} />
+          <img className='chatScreenImg' src={state.user.profileImage || `https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png`} alt="image" />
+          <b>{`${state.user.firstName} ${state.user.lastName}`}</b>
+        </div>
+        <div className='headSect'>
+          <ThreeDotsVertical />
+        </div>
+      </header>
+      <form id='chatSearch'>
+        <input type="search" placeholder='Search Here . . .' />
+        <button type='submit'><SearchBs /></button>
+      </form>
+      <div className='chatUsersChats'>
+      {!users ? <span id="loader"></span> : (users.length === 0 ? (
+              <div className="loadContainer">
+                <span id="loader"></span>
+              </div>
+            ) : (
+              users.map((user, index) => (
+
+                <SingleChatUser_ image={user.profileImage} userName={`${user.firstName} ${user.lastName}`} userId={user._id} userEmail={user.email}/>
+
+              ))
+            ))}
       </div>
     </div>
   )
-};
+}
 
-export default Chat;
+export default Chat

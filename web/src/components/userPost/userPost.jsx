@@ -112,8 +112,10 @@ const UserPost = (props) => {
   return (
     <div className="singlePost">
       <div className="postHead" onClick={() => { getProfile(props.userId) }}>
-        <img
-          src={props.userImage || `https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png`}
+      <img
+          src={
+            props.userImage || `https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png`
+          }
           alt="Profile"
         />
         <div className="postNames">
