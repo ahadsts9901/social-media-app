@@ -42,7 +42,7 @@ const Chat = () => {
       <header>
         <div className='headSect'>
           <ArrowLeft onClick={() => { window.history.back() }} />
-          <img className='chatScreenImg' src={state.user.profileImage || `https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png`} alt="image" />
+          <img className='chatScreenImg' src={state.user.profileImage} alt="image" />
           <b>{`${state.user.firstName} ${state.user.lastName}`}</b>
         </div>
         <div className='headSect'>

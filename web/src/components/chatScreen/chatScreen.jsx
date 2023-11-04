@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./chatScreen.css";
 import { ArrowLeft, PlusLg, ThreeDotsVertical } from "react-bootstrap-icons";
 import { IoMdSend } from "react-icons/io";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"
 // import UserMessages from '../userMessages/UserMessages'
 // import OthersMessages from '../othersMessages/OthersMessages'
 
 const ChatScreen = () => {
   const { userId } = useParams();
+
+  const navigate = useNavigate()
 
   const [profile, setProfile] = useState();
 
@@ -26,6 +29,37 @@ const ChatScreen = () => {
     }
   };
 
+  const chatText = useRef()
+  const chatImage = useRef()
+
+  const chatSubmit = async (event) => {
+
+    event.preventDefault()
+
+    try {
+
+      let formData = new FormData();
+
+      formData.append("to_id", userId);
+      formData.append("chatMessage", chatText.current.value);
+      formData.append("chatImage", chatImage.current.files[0]);
+
+      const response = await axios.post(
+        `/api/v1/message`,
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        })
+
+      console.log(response.data);
+      event.target.reset();
+    } catch (error) {
+      // handle error
+      console.log(error?.data);
+    }
+
+  }
+
   return (
     <div className="chat">
       <header>
@@ -39,13 +73,12 @@ const ChatScreen = () => {
             <img
               className="chatScreenImg"
               src={
-                profile.profileImage ||
-                `https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png`
+                profile.profileImage
               }
               alt="image"
             />
           ) : null}
-          {profile ? <b>{`${profile.firstName} ${profile.lastName}`}</b> : null}
+          {profile ? <b onClick={() => { navigate(`/profile/${userId}`) }} >{`${profile.firstName} ${profile.lastName}`}</b> : null}
         </div>
         <div className="headSect">
           <b className="lastSeen">9:30 AM</b>
@@ -62,12 +95,12 @@ const ChatScreen = () => {
 
       <div style={{ padding: "5em" }}></div>
 
-      <form action="" id="send">
-        <input hidden type="file" id="chatFile" />
+      <form onSubmit={(event) => { chatSubmit(event) }} id="send">
+        <input hidden type="file" id="chatFile" ref={chatImage} />
         <label htmlFor="chatFile">
-          <PlusLg className="ChatInputIcon" />
+          <PlusLg />
         </label>
-        <input type="text" placeholder="Type a message" className="chatInput" />
+        <input type="text" placeholder="Type a message" className="chatInput" ref={chatText} />
         <button className="chatButton" type="submit">
           <IoMdSend style={{ fontSize: "1.5em" }} />
         </button>
