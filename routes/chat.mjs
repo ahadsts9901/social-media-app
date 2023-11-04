@@ -1,82 +1,112 @@
 import express from 'express';
-import { client } from '../mongodb.mjs'
+import { client } from '../mongodb.mjs';
 import { ObjectId } from 'mongodb';
-import admin from "firebase-admin";
-import multer, { diskStorage } from 'multer';
-import fs from "fs";
 
-const db = client.db("weapp")
-const col = db.collection("posts")
-const chatCol = db.collection("chats")
-const userCollection = db.collection("auth")
+const db = client.db("weapp");
+const userCollection = db.collection("auth");
+const chatCol = db.collection("chats");
 
-let router = express.Router()
-
+let router = express.Router();
 
 router.get('/chat', async (req, res, next) => {
-    try {
-        const projection = { _id: 1, firstName: 1, lastName: 1, email: 1, profileImage: 1, }
-        const cursor = userCollection.find({}).sort({ _id: 1 }).project(projection);
-        let results = await cursor.toArray();
+  try {
+    const projection = { _id: 1, firstName: 1, lastName: 1, email: 1, profileImage: 1 };
+    const cursor = userCollection.find({}).sort({ _id: 1 }).project(projection);
+    let results = await cursor.toArray();
 
-        console.log(results);
-        res.send(results);
-    } catch (error) {
-        console.error(error);
+    console.log(results);
+    res.send(results);
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+router.post('/message', (req, res, next) => {
+  req.decoded = { ...req.body.decoded };
+  next();
+}, async (req, res, next) => {
+
+  if (!req.body.to_id || !req.body.chatMessage) {
+    res.status(403);
+    res.send(`Required parameters missing,
+    example request body:
+    {
+        to_id: "43532452453565645635345",
+        chatMessage: "some post text"
+    } `);
+    return;
+  }
+
+  if (!ObjectId.isValid(req.body.to_id)) {
+    res.status(403).send(`Invalid user id`);
+    return;
+  }
+
+  try {
+    const insertResponse = await chatCol.insertOne({
+      fromName: `${req.decoded.firstName} ${req.decoded.lastName}`,
+      toName: req.body.toName,
+      from_id: new ObjectId(req.decoded._id),
+      to_id: new ObjectId(req.body.to_id),
+      message: req.body.chatMessage,
+      time: new Date(),
+    });
+    console.log("Message inserted:", insertResponse);
+
+    res.send({ message: 'Message sent' });
+  } catch (e) {
+    console.log("Error sending message to MongoDB:", e);
+    res.status(500).send({ message: 'Server error, please try later' });
+  }
+});
+
+router.get('/messages/:from_id', (req, res, next) => {
+    req.decoded = { ...req.body.decoded };
+    next();
+  }, async (req, res, next) => {
+
+    if (!req.params.from_id) {
+        res.status(403);
+        res.send(`required parameters missing, 
+        example request body:
+        {
+            from_id: "43532452453565645635345"
+        } `);
     }
-});
 
-// message
+    if (!ObjectId.isValid(req.params.from_id)) {
+        res.status(403).send(`Invalid user id`);
+        return;
+    }
 
-router.post("/message", multer().none(), async (req, res, next) => {
+    console.log(req.params.from_id);
 
-    // console.log("req.body: ", req.body);
-    // console.log("req.currentUser: ", req.currentUser);
+    const cursor = chatCol.find({
+        $or: [
+            {
+                to_id: new ObjectId(req.decoded._id),
+                from_id: new ObjectId(req.params.from_id),
+            }
+            ,
+            {
+                from_id: new ObjectId(req.decoded._id),
+                to_id: new ObjectId(req.params.from_id)
+            }
+        ]
+    })
 
-    // if (!req.body.to_id && !req.body.chatMessage && !req.body.chatImage) {
-    //     res.status(403);
-    //     res.send(`required parameters missing, 
-    //     example request body:
-    //     {
-    //         to_id: "43532452453565645635345",
-    //         messageText: "some post text",
-    //         image: "an image
-    //     } `);
-    //     return;
-    // }
+        .sort({ _id: 1 })
+        .limit(100);
 
-    // if (!ObjectId.isValid(req.body.to_id)) {
-    //     res.status(403).send(`Invalid user id`);
-    //     return;
-    // }
-
-    console.log("names" ,req);
-
-    // try {
-    //     const insertResponse = await chatCol.insertOne({
-
-    //         fromName: req.currentUser.firstName + " " + req.currentUser.lastName,
-    //         fromEamil: req.currentUser.email, // malik@abc.com
-    //         from_id: new ObjectId(req.currentUser._id), // 245523423423424234
-
-    //         to_id: new ObjectId(req.body.to_id),
-
-    //         messageText: req.body.messageText,
-    //         imgUrl: req.body.imgUrl,
-
-    //         createdOn: new Date()
-    //     });
-    //     console.log("insertResponse: ", insertResponse);
-
-    //     // io.emit("comeChannel", req.body.messageText);
-
-    //     res.send({ message: 'message sent' });
-    // } catch (e) {
-    //     console.log("error sending message mongodb: ", e);
-    //     res.status(500).send({ message: 'server error, please try later' });
-    // }
-
+    try {
+        let results = await cursor.toArray()
+        console.log("results: ", results);
+        res.send(results);
+    } catch (e) {
+        console.log("error getting data mongodb: ", e);
+        res.status(500).send('server error, please try later');
+    }
 
 });
 
-export default router
+export default router;

@@ -18,31 +18,6 @@ app.use(cookieParser()); // cookie parser
 
 app.use("/api/v1", authRouter)
 
-// app.use("/api/v1", (req, res, next) => {
-//     console.log("cookies: ", req.cookies);
-
-//     const token = req.cookies.token;
-
-//     try {
-//         const decoded = jwt.verify(token, process.env.SECRET);
-//         console.log("decoded: ", decoded);
-
-//         req.body.decoded = {
-//             firstName: decoded.firstName,
-//             lastName: decoded.lastName,
-//             email: decoded.email,
-//             isAdmin: decoded.isAdmin,
-//         };
-
-//         next();
-
-//     } catch (err) {
-//         console.error(err)
-//         return;
-//     }
-
-// })
-
 app.use("/api/v1", (req, res, next) => {
     console.log("cookies: ", req.cookies);
 
@@ -53,10 +28,7 @@ app.use("/api/v1", (req, res, next) => {
         console.log("decoded: ", decoded);
 
         req.body.decoded = {
-            firstName: decoded.firstName,
-            lastName: decoded.lastName,
-            email: decoded.email,
-            isAdmin: decoded.isAdmin,
+            ...decoded
         };
 
         next();
