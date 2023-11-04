@@ -95,6 +95,8 @@ header{
     justify-content: start;
     gap: 1em;
     padding: 0.5em;
+    background-image: url(../assets/background.png);
+    background-repeat: repeat;
 }
 
 .plus{
