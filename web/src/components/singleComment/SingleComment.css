@@ -56,11 +56,13 @@
     justify-content: start;
     align-items: start;
     gap: 1em;
-    padding: 1em;
+    padding: 0em;
+    padding-top: 0;
     font-size: 0.8em;
     border-radius: 5px;
     background-color: #fff;
     color: #414141;
+    z-index: 1;
 }
 
 .actionContComment {
@@ -68,6 +70,12 @@
     display: flex;
     flex-direction: column;
     justify-content: start;
-    align-items: start;
+    align-items: flex-end;
     gap: 1em;
+}
+
+.leftFloatComment{
+    width:3em;
+    float: left;
+    color: #00000000;
 }

@@ -152,6 +152,10 @@ const SinglePost = () => {
 
     event.preventDefault();
 
+    if (commentRef.current.value.trim() === "") {
+      return;
+    }
+
     let formData = new FormData();
 
     const userId = `${state.user.userId}`;
@@ -234,12 +238,12 @@ const SinglePost = () => {
 
   const editComment = (commentId, event) => {
 
-    // edit TODO
+    let commentToEdit = event.target.parentNode.parentNode.nextElementSibling.nextElementSibling.firstElementChild.firstElementChild.textContent
 
     Swal.fire({
-      title: 'Edit Post',
+      title: 'Edit Comment',
       html: `
-            <textarea id="editText" class="swal2-input text" placeholder="Post Text" required>${post.text}</textarea>
+            <textarea id="editText" class="swal2-input text" placeholder="Post Text" required>${commentToEdit}</textarea>
           `,
       showCancelButton: true,
       cancelButtonText: 'Cancel',
@@ -251,31 +255,31 @@ const SinglePost = () => {
       showLoaderOnConfirm: true,
       preConfirm: () => {
 
-        const editedText = document.getElementById('editText').value;
+        const editedComment = document.getElementById('editText').value;
 
-        if (!editedText.trim()) {
-          Swal.showValidationMessage('Title and text are required');
+        if (!editedComment.trim()) {
+          Swal.showValidationMessage('Comment is required');
           return false;
         }
 
-        return axios.put(`/api/v1/post/${postId}`, {
-          text: editedText
+        return axios.put(`/api/v1/comment/${commentId}`, {
+          comment: editedComment
         })
           .then(response => {
             // console.log(response.data);
             Swal.fire({
               icon: 'success',
-              title: 'Post Updated',
+              title: 'Comment Updated',
               timer: 1000,
               showConfirmButton: false
             });
-            seePost(postId)
+            getComments(postId.postId)
           })
           .catch(error => {
             // console.log(error.response.data);
             Swal.fire({
               icon: 'error',
-              title: 'Failed to update post',
+              title: 'Failed to update comment',
               text: error.response.data,
               showConfirmButton: false
             });
@@ -320,7 +324,7 @@ const SinglePost = () => {
       <div className="commentSection">
         <form className="commentForm" onSubmit={(event) => { doComment(event) }} >
           <textarea className="commentFormText" placeholder="Enter a comment" ref={commentRef}></textarea>
-          <button className="commentButton" type="submit">Post</button>
+          <button className="commentButton" type="submit">Add Comment</button>
         </form>
         {
           comments ? comments.map((comment, index) => (

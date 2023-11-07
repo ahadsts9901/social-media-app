@@ -78,7 +78,7 @@
 }
 
 .commentButton{
-    width: 6em;
+    width: fit-content;
     padding: 0.8em;
     border: 0;
     background-color: #284352;

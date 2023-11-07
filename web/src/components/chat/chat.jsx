@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom'
 import { GlobalContext } from '../../context/context';
 
 const Chat = () => {
-
   
   let { state, dispatch } = useContext(GlobalContext);
 
