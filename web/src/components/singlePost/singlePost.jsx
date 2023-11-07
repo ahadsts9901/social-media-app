@@ -1,23 +1,28 @@
 import "./singlePost.css";
 import moment from "moment";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { Search as SearchBS } from "react-bootstrap-icons";
 import axios from "axios";
 import { GlobalContext } from "../../context/context";
 import { useParams, useNavigate } from "react-router-dom";
 import { Post } from "../post/post";
 import Swal from "sweetalert2"
+import SingleComment from "../singleComment/SingleComment"
 
 const SinglePost = () => {
   let { state, dispatch } = useContext(GlobalContext);
   const [post, setPost] = useState();
+  const [comments, setComments] = useState()
   const navigate = useNavigate()
+
+  const commentRef = useRef()
 
   const postId = useParams();
 
   useEffect(() => {
-    seePost(postId.postId);
 
+    seePost(postId.postId);
+    getComments(postId.postId)
     return () => {
       // cleanup function
     };
@@ -141,10 +146,58 @@ const SinglePost = () => {
       });
   }
 
+  // comment
+
+  const doComment = (event) => {
+
+    event.preventDefault();
+
+    let formData = new FormData();
+
+    const userId = `${state.user.userId}`;
+
+    formData.append("userId", userId);
+    formData.append("userImage", state.user.profileImage);
+    formData.append("userName", `${state.user.firstName} ${state.user.lastName}`);
+    formData.append("postId", postId.postId);
+    formData.append("comment", commentRef.current.value);
+
+    axios
+      .post(`/api/v1/comment`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then(function (response) {
+        // console.log(response.data);
+        Swal.fire({
+          icon: "success",
+          title: "Comment Added",
+          timer: 1000,
+          showConfirmButton: false,
+        });
+        getComments(postId.postId)
+      })
+      .catch(function (error) {
+        console.log(error)
+      });
+
+    event.target.reset()
+  };
+
+  const getComments = async (postId) => {
+    try {
+      const response = await axios.get(`/api/v1/comments/${postId}`);
+      const comments = response.data;
+      console.log(comments);
+      setComments(comments)
+    } catch (error) {
+      console.error('An error occurred while fetching comments:', error);
+    }
+  };
+
   return (
     <div className="singlePostCont">
       <div className="backArrow">
-      <h2 className="bi bi-arrow-left" onClick={()=>{ window.history.back() }}></h2>
+        <h2 className="bi bi-arrow-left" onClick={() => { window.history.back() }}></h2>
       </div>
       {post ? ( // Check if post is defined
         <>
@@ -174,7 +227,10 @@ const SinglePost = () => {
         <span class="loader"></span>
       )}
       <div className="commentSection">
-        Comments section is under construction
+        <form className="commentForm" onSubmit={(event) => { doComment(event) }} >
+          <textarea className="commentFormText" placeholder="Enter a comment" ref={commentRef}></textarea>
+          <button className="commentButton" type="submit">Post</button>
+        </form>
       </div>
     </div>
   );

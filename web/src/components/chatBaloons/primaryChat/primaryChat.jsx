@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import "./primaryChat.css";
-import { ChevronDown } from "react-bootstrap-icons";
+import { ChevronDown, PencilFill, TrashFill, ChevronUp } from "react-bootstrap-icons";
 import moment from "moment"
+import { GlobalContext } from "../../../context/context";
 
 const PrimaryChat = (props) => {
 
-    const time = moment(props.time).fromNow();
+  let { state, dispatch } = useContext(GlobalContext);
+  const time = moment(props.time).fromNow();
+
+  const [showAction, setShowAction] = useState(false)
 
   return (
 
@@ -16,11 +20,27 @@ const PrimaryChat = (props) => {
         </p>
         <span className="messageDetails">
           <p id="time">{time}</p>
-          <ChevronDown style={{marginTop:"0.3em"}}/>
+
+          {
+            state.user.userId === props.from_id ?
+              showAction ? <ChevronUp onClick={() => { setShowAction(!showAction) }} style={{ marginTop: "0.3em" }
+              } /> :
+                <ChevronDown onClick={() => { setShowAction(!showAction) }} style={{ marginTop: "0.3em" }} />
+              : null
+          }
+
         </span>
-      </div>
+        {
+          state.user.userId === props.from_id ?
+            (showAction ? <div className="chatActionCont">
+              < p onClick={() => { props.del(props._id) }}> <TrashFill /> Delete</p>
+              <p onClick={(event) => { props.edit(props._id, event) }} ><PencilFill /> Edit</p>
+            </div> : null)
+            : null
+        }
+      </div >
       <div className="messageTail"></div>
-    </div>
+    </div >
   );
 };
 

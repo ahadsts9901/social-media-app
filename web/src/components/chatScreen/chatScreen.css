@@ -103,6 +103,26 @@ header{
     color: #f1f1f1;
 }
 
+.chatMenu{
+    position: fixed;
+    top: 70px;
+    right: 15px;
+    z-index: 35;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: 1em;
+    border-radius: 5px;
+    box-shadow: 0 0 8ps #888;
+    color: #f1f1f1;
+    background-color: #284352;
+    width: 12em;
+    padding: 1.5em;
+    font-size: 0.8em;
+    /* height: 17em; */
+}
+
 @media (max-width:425px){
     .chat{
         width: 100%;
