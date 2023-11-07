@@ -61,55 +61,18 @@ router.get('/comments/:postId', async (req, res, next) => {
     }
 });
 
+router.delete('/comment/:commentId', async (req, res, next) => {
 
-router.get('/post/:postId', async (req, res, next) => {
-
-    console.log(req.params.postId);
-
-    const postId = new ObjectId(req.params.postId);
-
-    try {
-        // const projection = {_id :1, title:1, text:1, time:1, userId:1, likes:1, }
-        const post = await col.findOne({ _id: postId });
-
-        if (post) {
-            res.send(post);
-        } else {
-            res.status(404).send('Post not found with id ' + postId);
-        }
-    } catch (error) {
-        console.error(error);
-        console.log(postId)
-    }
-});
-
-// DELETE ALL   /api/v1/posts
-
-router.delete('/posts/all', async (req, res, next) => {
-    try {
-
-        const deleteResponse = await col.deleteMany({});
-
-        if (deleteResponse.deletedCount > 0) {
-            res.send(`${deleteResponse.deletedCount} posts deleted successfully.`);
-        } else {
-            res.send('No posts found to delete.');
-        }
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-// DELETE  /api/v1/post/:postId
-router.delete('/post/:postId', async (req, res, next) => {
-    const postId = new ObjectId(req.params.postId);
+    
+    const commentId = new ObjectId(req.params.commentId);
+    console.log("commentId", commentId);
 
     try {
-        const deleteResponse = await col.deleteOne({ _id: postId });
+        const deleteResponse = await commentsCollection.deleteOne({ _id: commentId });
         if (deleteResponse.deletedCount === 1) {
-            res.send(`Post with id ${postId} deleted successfully.`);
+            res.send(`Comment with id ${commentId} deleted successfully.`);
         } else {
-            res.send('Post not found with the given id.');
+            res.send('Comment not found with the given id.');
         }
     } catch (error) {
         console.error(error);
@@ -141,142 +104,6 @@ router.put('/post/:postId', async (req, res, next) => {
     }
 });
 
-// all posts of a user
-
-// GET ALL POSTS FOR A SPECIFIC EMAIL /api/v1/posts/:email
-router.get('/posts/:userId', async (req, res, next) => {
-    const userId = req.params.userId;
-
-    if (!ObjectId.isValid(userId)) {
-        res.status(403).send(`Invalid user id`);
-        return;
-    }
-
-    try {
-        const projection = { _id: 1, title: 1, text: 1, time: 1, userId: 1, likes: 1, userImage: 1 }
-        const cursor = col.find({ userId: new ObjectId(userId) }).sort({ _id: -1 }).project(projection);
-        const results = await cursor.toArray();
-
-        console.log(results);
-        res.send(results);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Server error');
-    }
-});
-
-// profile
-
-router.get('/profile/:userId', async (req, res, next) => {
-
-    const userId = req.params.userId || req.body.decoded.userId
-
-    if (!ObjectId.isValid(userId)) {
-        res.status(403).send(`Invalid user id`);
-        return;
-    }
-
-    try {
-        let result = await userCollection.findOne({ _id: new ObjectId(userId) });
-        console.log("result: ", result); // [{...}] []
-        res.send({
-            message: 'profile fetched',
-            data: {
-                isAdmin: result.isAdmin,
-                firstName: result.firstName,
-                lastName: result.lastName,
-                email: result.email,
-                userId: result._id,
-                profileImage: result.profileImage
-            },
-            id: userId
-        });
-
-    } catch (e) {
-        console.log("error getting data mongodb: ", e);
-        res.status(500).send('server error, please try later');
-    }
-})
-
-// ping auth
-
-router.use('/ping', async (req, res, next) => {
-
-    try {
-        let result = await userCollection.findOne({ email: req.body.decoded.email });
-        console.log("result: ", result); // [{...}] []
-        res.send({
-            message: 'profile fetched',
-            data: {
-                isAdmin: result.isAdmin,
-                firstName: result.firstName,
-                lastName: result.lastName,
-                email: result.email,
-                userId: result._id,
-                profileImage: result.profileImage,
-            }
-        });
-
-    } catch (e) {
-        console.log("error getting data mongodb: ", e);
-        res.status(401).send('UnAuthorized');
-    }
-})
-
-// search
-
-const initializeOpenAIClient = () => {
-    return new openai({
-        apiKey: process.env.OPENAI_API_KEY, // Replace with your OpenAI API key
-    });
-};
-
-router.get("/search", async (req, res) => {
-    const queryText = req.query.q;
-
-    try {
-        // Initialize the OpenAI client
-        const openaiClient = initializeOpenAIClient();
-
-        // Create an embedding for the query text
-        const response = await openaiClient.embeddings.create({
-            model: "text-embedding-ada-002",
-            input: queryText,
-        });
-
-        // Extract the vector from the response
-        const vector = response?.data[0]?.embedding;
-
-        // Perform a search using the vector
-        const documents = await col
-            .aggregate([
-                {
-                    $search: {
-                        index: "we_app",
-                        knnBeta: {
-                            vector: vector,
-                            path: "embedding",
-                            k: 10,
-                        },
-                        scoreDetails: true,
-                    },
-                },
-                {
-                    $project: {
-                        embedding: 0,
-                        score: { "$meta": "searchScore" },
-                        scoreDetails: { "$meta": "searchScoreDetails" }
-                    }
-                }
-            ])
-            .toArray();
-
-        res.send(documents);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Error during search');
-    }
-});
 
 router.post('/post/:postId/dolike', async (req, res, next) => {
 
