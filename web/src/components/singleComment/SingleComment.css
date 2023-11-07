@@ -4,10 +4,11 @@
     justify-content: start;
     align-items: start;
     gap: 0.7em;
-    padding: 0.7em;
+    padding: 1em;
     background-color: #fff;
-    font-size: 0.8em;
+    font-size: 0.7em;
     border-radius: 5px;
+    width: 90%;
 }
 
 .singleCommentHead {
@@ -19,8 +20,8 @@
 }
 
 .singleCommentHead>img {
-    width: 1.5em;
-    height: 1.5em;
+    width: 2em;
+    height: 2em;
     border-radius: 100%;
     object-fit: cover;
 }
@@ -29,15 +30,44 @@
     color: #313131;
 }
 
-.singleComment>span {
+#time {
     font-size: 0.7em;
     color: #313131;
     justify-self: end;
+    margin-left: auto;
+    text-align: right;
 }
 
 .commentText {
     width: 100%;
     color: #414141;
     text-align: left;
-    word-wrap: break-word;
+    margin: 0.5em 0;
+    font-size: 0.9em;
+    word-break: break-all;
+}
+
+.comment::first-line {
+    padding-left: 3em;
+}
+
+.commentMenu {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    gap: 1em;
+    padding: 1em;
+    font-size: 0.8em;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #414141;
+}
+
+.actionContComment {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: 1em;
 }

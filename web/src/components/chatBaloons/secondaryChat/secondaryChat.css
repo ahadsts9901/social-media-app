@@ -32,6 +32,7 @@
   margin-top: 1em;
   font-weight: normal !important;
   font-size: 0.95em;
+  word-break: break-all;
 }
 
 .otherDetails {
@@ -42,7 +43,7 @@
   width: 100%;
 }
 
-.otherDetails>#time {
+.otherDetails>#chatTime {
   font-size: 0.75em;
   margin: 0;
   margin-top: 0.5em;

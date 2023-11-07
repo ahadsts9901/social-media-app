@@ -26,7 +26,7 @@ const SecondaryChat = (props) => {
                 <ChevronDown onClick={() => { setShowAction(!showAction) }} style={{ marginTop: "0.3em" }} />
               : null
           }
-          <p id="time">{time}</p>
+          <p id="chatTime">{time}</p>
         </span>
         {
           state.user.userId === props.from_id ?

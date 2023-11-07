@@ -48,7 +48,7 @@ const SinglePost = () => {
   const deletePost = (postId) => {
     Swal.fire({
       title: 'Delete Post',
-      text: 'Are you sure you want to delete this post?',
+      text: 'Are you sure you want to delete this post ?',
       icon: 'warning',
       showCancelButton: true,
       cancelButtonText: 'Cancel',
@@ -187,12 +187,103 @@ const SinglePost = () => {
     try {
       const response = await axios.get(`/api/v1/comments/${postId}`);
       const comments = response.data;
-      console.log(comments);
+      // console.log(comments);
       setComments(comments)
     } catch (error) {
       console.error('An error occurred while fetching comments:', error);
     }
   };
+
+  const deleteComment = (commentId) => {
+    Swal.fire({
+      title: 'Delete Comment',
+      text: 'Are you sure you want to delete this Comment ?',
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'Cancel',
+      confirmButtonText: 'Delete',
+      showConfirmButton: true,
+      confirmButtonColor: "#284352",
+      showCancelButton: true,
+      cancelButtonColor: "#284352",
+      showLoaderOnConfirm: true,
+      preConfirm: async () => {
+        try {
+          const response = await axios.delete(`/api/v1/comment/${commentId}`);
+          // console.log(response.data);
+          Swal.fire({
+            icon: 'success',
+            title: 'Comment Deleted',
+            timer: 1000,
+            showCancelButton: false,
+            showConfirmButton: false
+          });
+          getComments(postId.postId)
+        } catch (error) {
+          console.log(error.data);
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed to delete comment',
+            text: error.data,
+            showConfirmButton: false
+          });
+        }
+      }
+    });
+  }
+
+  const editComment = (commentId, event) => {
+
+    // edit TODO
+
+    Swal.fire({
+      title: 'Edit Post',
+      html: `
+            <textarea id="editText" class="swal2-input text" placeholder="Post Text" required>${post.text}</textarea>
+          `,
+      showCancelButton: true,
+      cancelButtonText: 'Cancel',
+      confirmButtonText: 'Update',
+      showConfirmButton: true,
+      confirmButtonColor: "#284352",
+      showCancelButton: true,
+      cancelButtonColor: "#284352",
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+
+        const editedText = document.getElementById('editText').value;
+
+        if (!editedText.trim()) {
+          Swal.showValidationMessage('Title and text are required');
+          return false;
+        }
+
+        return axios.put(`/api/v1/post/${postId}`, {
+          text: editedText
+        })
+          .then(response => {
+            // console.log(response.data);
+            Swal.fire({
+              icon: 'success',
+              title: 'Post Updated',
+              timer: 1000,
+              showConfirmButton: false
+            });
+            seePost(postId)
+          })
+          .catch(error => {
+            // console.log(error.response.data);
+            Swal.fire({
+              icon: 'error',
+              title: 'Failed to update post',
+              text: error.response.data,
+              showConfirmButton: false
+            });
+          });
+      }
+    });
+
+  }
 
   return (
     <div className="singlePostCont">
@@ -231,6 +322,11 @@ const SinglePost = () => {
           <textarea className="commentFormText" placeholder="Enter a comment" ref={commentRef}></textarea>
           <button className="commentButton" type="submit">Post</button>
         </form>
+        {
+          comments ? comments.map((comment, index) => (
+            <SingleComment userName={comment.userName} userId={comment.userId} image={comment.userImage} comment={comment.comment} time={comment.time} _id={comment._id} del={deleteComment} edit={editComment} />
+          )) : null
+        }
       </div>
     </div>
   );

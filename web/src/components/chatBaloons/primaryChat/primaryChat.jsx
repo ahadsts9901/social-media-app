@@ -19,7 +19,7 @@ const PrimaryChat = (props) => {
           {props.message}
         </p>
         <span className="messageDetails">
-          <p id="time">{time}</p>
+          <p id="chatTime">{time}</p>
 
           {
             state.user.userId === props.from_id ?
