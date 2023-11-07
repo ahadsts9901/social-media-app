@@ -79,25 +79,24 @@ router.delete('/comment/:commentId', async (req, res, next) => {
     }
 });
 
-// EDIT post
+router.put('/comment/:commentId', async (req, res, next) => {
+    
+    const commentId = new ObjectId(req.params.commentId);
 
-// PUT /api/v1/post/:postId
-router.put('/post/:postId', async (req, res, next) => {
-    const postId = new ObjectId(req.params.postId);
-    const { text } = req.body;
+    const { comment } = req.body;
 
-    if (!text) {
-        res.status(403).send('Required parameters missing. Please provide both "title" and "text".');
+    if (!comment) {
+        res.status(403).send('Required parameters missing. Please provide comment".');
         return;
     }
 
     try {
-        const updateResponse = await col.updateOne({ _id: postId }, { $set: { text } });
+        const updateResponse = await commentsCollection.updateOne({ _id: commentId }, { $set: { comment } });
 
         if (updateResponse.matchedCount === 1) {
-            res.send(`Post with id ${postId} updated successfully.`);
+            res.send(`Comment with id ${commentId} updated successfully.`);
         } else {
-            res.send('Post not found with the given id.');
+            res.send('Comment not found with the given id.');
         }
     } catch (error) {
         console.error(error);
