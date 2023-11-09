@@ -1,29 +1,73 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
-import "./chatScreen.css";
+import "./ChatScreen.css";
 import {
   ArrowLeft,
   PlusLg,
   ThreeDotsVertical,
-  TrashFill,
 } from "react-bootstrap-icons";
 import { IoMdSend } from "react-icons/io";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import io from 'socket.io-client';
 
 import PrimaryChat from "../chatBaloons/primaryChat/primaryChat";
 import SecondaryChat from "../chatBaloons/secondaryChat/secondaryChat";
 
 import { GlobalContext } from "../../context/context";
 
+import { baseUrl } from '../../core.mjs';
+
 const ChatScreen = () => {
+
   let { state, dispatch } = useContext(GlobalContext);
+
   const { userId } = useParams();
   const navigate = useNavigate();
   const [profile, setProfile] = useState();
   const [messages, setMessages] = useState();
   const [showMenu, setShowMenu] = useState(false);
+
+  // socket.io useEffect
+  // =====================================================================================
+
+  useEffect(() => {
+
+  const fetchData = async () => {
+    const socket = io(baseUrl);
+
+    socket.on('connect', function () {
+      console.log("connected")
+    });
+
+    socket.on('disconnect', function (message) {
+      console.log("Socket disconnected from server: ", message);
+    });
+
+    socket.on(state.user.userId, async (e) => {
+      console.log("a new message for you: ", e);
+
+      try {
+        const response = await axios.get(`${baseUrl}/api/v1/messages/${userId}`);
+        setMessages([...response.data]);
+      } catch (error) {
+        console.log(error);
+      }
+    });
+
+    return () => {
+      // cleanup function
+      socket.close();
+    };
+  };
+
+  fetchData();
+
+}, []);
+
+
+  // =====================================================================================
 
   useEffect(() => {
     getProfile(userId);
@@ -32,7 +76,7 @@ const ChatScreen = () => {
 
   const getProfile = async (userId) => {
     try {
-      const response = await axios.get(`/api/v1/profile/${userId}`);
+      const response = await axios.get(`${baseUrl}/api/v1/profile/${userId}`);
       setProfile(response.data.data);
     } catch (error) {
       console.log(error.response.data);
@@ -50,7 +94,7 @@ const ChatScreen = () => {
     }
 
     try {
-      const response = await axios.post(`/api/v1/message`, {
+      const response = await axios.post(`${baseUrl}/api/v1/message`, {
         to_id: userId,
         toName: `${profile.firstName} ${profile.lastName}`,
         chatMessage: chatText.current.value,
@@ -74,7 +118,7 @@ const ChatScreen = () => {
 
   const getMessages = async () => {
     try {
-      const response = await axios.get(`/api/v1/messages/${userId}`);
+      const response = await axios.get(`${baseUrl}/api/v1/messages/${userId}`);
       // console.log(response.data);
       setMessages([...response.data]);
     } catch (error) {
@@ -97,7 +141,7 @@ const ChatScreen = () => {
       showLoaderOnConfirm: true,
       preConfirm: async () => {
         try {
-          const response = await axios.delete(`/api/v1/message/${messageId}`);
+          const response = await axios.delete(`${baseUrl}/api/v1/message/${messageId}`);
           // console.log(response.data);
           Swal.fire({
             icon: "success",
@@ -146,7 +190,7 @@ const ChatScreen = () => {
         }
 
         try {
-          const response = await axios.put(`/api/v1/message/${messageId}`, {
+          const response = await axios.put(`${baseUrl}/api/v1/message/${messageId}`, {
             message: editedMessage,
           });
 
@@ -189,7 +233,7 @@ const ChatScreen = () => {
       preConfirm: async () => {
         try {
           const response = await axios.delete(
-            `/api/v1/messages/${from_id}/${to_id}`
+            `${baseUrl}/api/v1/messages/${from_id}/${to_id}`
           );
           // console.log(response.data);
           Swal.fire({
