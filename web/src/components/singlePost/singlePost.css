@@ -68,7 +68,7 @@
 }
 
 .commentFormText{
-    width: 425px!important;
+    width: 425px;
     height: 7em!important;
     border: 1px solid #ccc;
     border-left: 0;
@@ -95,7 +95,7 @@
 }
 
 @media only screen and (max-width: 425px) {
-    .seeWhoLiked,.singlePostCont,.commentFormText {
+    .seeWhoLiked,.singlePostCont,.commentFormText, .commentForm {
         width: 100%;
     }
 }

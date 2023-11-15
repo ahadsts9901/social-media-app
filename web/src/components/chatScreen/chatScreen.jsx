@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
-import "./ChatScreen.css";
+import "./chatScreen.css";
 import {
   ArrowLeft,
   PlusLg,

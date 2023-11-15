@@ -24,6 +24,8 @@ import axios from "axios"
 import io from 'socket.io-client';
 
 import { baseUrl } from './core.mjs';
+import ForgotPassword from './components/forgotPassword/forgotPassword.jsx';
+import ForgotPasswordComplete from './components/forgotPasswordComplete/forgotPasswordComplete.jsx';
 
 const App = () => {
 
@@ -184,6 +186,8 @@ const App = () => {
                         <Route path="/profile/:userParamsId" element={<Profile />} />
                         <Route path="/post/:postId" element={<SinglePost />} />
                         <Route path="/likes/post/:postId" element={<PostLikes />} />
+                        <Route path="/forgot-password" element={<ForgotPassword/>} />
+                        <Route path="/forgot-password-complete" element={<ForgotPasswordComplete/>} />
 
                         <Route path="*" element={<Navigate to="/login" replace={true} />} />
                     </Routes>

@@ -20,6 +20,8 @@ const Profile = () => {
   const [profile, setProfile] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
 
+  console.log(userPosts);
+
   const fileInputRef = useRef();
 
   // const userId = state.user.userId
