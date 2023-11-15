@@ -255,7 +255,7 @@ router.get('/posts/:userId', async (req, res, next) => {
     }
 
     try {
-        const projection = { _id: 1, title: 1, text: 1, time: 1, userId: 1, likes: 1, userImage: 1 }
+        const projection = { _id: 1, title: 1, text: 1, time: 1, userId: 1, likes: 1, userImage: 1, image:1 }
         const cursor = col.find({ userId: new ObjectId(userId) }).sort({ _id: -1 }).project(projection);
         const results = await cursor.toArray();
 
