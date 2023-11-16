@@ -244,6 +244,7 @@ const ChatScreen = () => {
             showConfirmButton: false,
           });
           setShowMenu(false);
+          getMessages();
         } catch (error) {
           console.log(error.data);
           Swal.fire({
