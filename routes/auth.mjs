@@ -118,6 +118,7 @@ router.post('/signup', async (req, res, next) => {
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 email: req.body.email,
+                _id: insertResponse.insertedId,
             }, process.env.SECRET, {
                 expiresIn: '24h'
             });
@@ -182,8 +183,6 @@ router.post('/forgot-password', async (req, res, next) => {
             specialChars: false
         });
 
-        console.log("otpCode: ", otpCode);
-
         // nodemailer email send
 
         // const transporter = nodemailer.createTransport({
@@ -214,7 +213,9 @@ router.post('/forgot-password', async (req, res, next) => {
         });
         console.log("insertResponse: ", insertResponse);
 
-        res.send({ message: 'Forget password otp sent' });
+        res.send({ message: 'Forget password otp sent',
+                    otp: otpCode,
+        });
 
     } catch (e) {
         console.log("error getting data mongodb: ", e);
