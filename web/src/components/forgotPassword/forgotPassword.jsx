@@ -1,23 +1,20 @@
-import React, {
-  useState, useRef, useContext
-} from 'react';
-import axios from 'axios';
+import React, { useState, useRef, useContext } from "react";
+import axios from "axios";
 // import Swal from 'sweetalert2';
-import '../signup/signup.css';
-import { Link, useNavigate } from 'react-router-dom';
-import logo from "../assets/logoDark.png"
-import { GlobalContext } from "../../context/context"
+import "../signup/signup.css";
+import { Link, useNavigate } from "react-router-dom";
+import logo from "../assets/logoDark.png";
+import { GlobalContext } from "../../context/context";
 
-import { baseUrl } from '../../core.mjs';
+import { baseUrl } from "../../core.mjs";
 
 const ForgotPassword = () => {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   let { state, dispatch } = useContext(GlobalContext);
 
-  const [email, setEmail] = useState('');
-  const [validationMessage, setValidationMessage] = useState('');
+  const [email, setEmail] = useState("");
+  const [validationMessage, setValidationMessage] = useState("");
 
   const passwordRef = useRef(null);
 
@@ -32,7 +29,7 @@ const ForgotPassword = () => {
       return;
     }
 
-    if (email.trim() === '') {
+    if (email.trim() === "") {
       setValidationMessage("Please enter email");
       return;
     }
@@ -42,10 +39,14 @@ const ForgotPassword = () => {
         email: email,
       });
 
-      navigate("/forgot-password-complete", { state: { email: email } })
+      const otp = response.data.otp;
+
+      navigate("/forgot-password-complete", {
+        state: { email: email, otp: otp },
+      });
       
     } catch (error) {
-      setValidationMessage('Email or Password incorrect');
+      setValidationMessage("Email or Password incorrect");
       console.log("Email or Password incorrect");
       console.error(error.data);
     }
@@ -53,10 +54,17 @@ const ForgotPassword = () => {
 
   return (
     <div className="authContainer">
-      <h3 className="desktopHeading center">Forgot<br />Password</h3>
-      <div className='logoCont'>
-        <img src={logo} className='logo' alt="logo" />
-        <h1 className='line'><span className='black'>We</span><span> App</span></h1>
+      <h3 className="desktopHeading center">
+        Forgot
+        <br />
+        Password
+      </h3>
+      <div className="logoCont">
+        <img src={logo} className="logo" alt="logo" />
+        <h1 className="line">
+          <span className="black">We</span>
+          <span> App</span>
+        </h1>
         <p>Make Your Own</p>
         <p className="leftLogo">
           <Link to="/login" className="center">
@@ -68,8 +76,12 @@ const ForgotPassword = () => {
         </p>
       </div>
       <form className="login c jcc ais login-signup" onSubmit={forgotPassword}>
-        <div className='topHeading'>
-          <h2 className="center mobileHeading">Forgot<br />Password</h2>
+        <div className="topHeading">
+          <h2 className="center mobileHeading">
+            Forgot
+            <br />
+            Password
+          </h2>
         </div>
         <input
           required
@@ -84,7 +96,7 @@ const ForgotPassword = () => {
         <button type="submit" className="button">
           Next
         </button>
-        <div className='last forgotWhite'>
+        <div className="last forgotWhite">
           <p className="center">
             <Link to="/login" className="center">
               Login

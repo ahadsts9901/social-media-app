@@ -1,51 +1,65 @@
-import React, {
-  useState, useRef, useContext
-} from 'react';
-import axios from 'axios';
-// import Swal from 'sweetalert2';
-import '../signup/signup.css';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
-import logo from "../assets/logoDark.png"
-import { GlobalContext } from "../../context/context"
+import React, { useState, useRef, useContext, useEffect } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
+import "../signup/signup.css";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import logo from "../assets/logoDark.png";
+import { GlobalContext } from "../../context/context";
 
-import { baseUrl } from '../../core.mjs';
+import { baseUrl } from "../../core.mjs";
 
 const ForgotPasswordComplete = () => {
+  const location = useLocation();
 
-  const location = useLocation()
+  const otp = location.state.otp;
+
+  useEffect(()=>{
+    Swal.fire({
+      icon: "info",
+      text: "Your OTP code dont share it",
+      title: otp,
+      showConfirmButton: true,
+      confirmButtonColor: "#284352",
+      confirmButtonText: "Ok",
+    });
+  },[location.state.otp])
 
   let { state, dispatch } = useContext(GlobalContext);
 
-  const [validationMessage, setValidationMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [validationMessage, setValidationMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [isShowPassword, setShowPassword] = useState(false);
 
-  const emailRef = useRef(null)
+  const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
   const otpRef = useRef(null);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // Handle form submission
   const completeForgotPassword = async (event) => {
     event.preventDefault();
 
-    if (!(emailRef.current.value).endsWith("@gmail.com")) {
+    if (!emailRef.current.value.endsWith("@gmail.com")) {
       setValidationMessage("Invalid email address");
-      setSuccessMessage("")
+      setSuccessMessage("");
       return;
     }
 
-    if (emailRef.current.value.trim() === '' || passwordRef.current.value.trim() === '' || confirmPasswordRef.current.value.trim() === '') {
+    if (
+      emailRef.current.value.trim() === "" ||
+      passwordRef.current.value.trim() === "" ||
+      confirmPasswordRef.current.value.trim() === ""
+    ) {
       setValidationMessage("Please fill required fields");
-      setSuccessMessage("")
+      setSuccessMessage("");
       return;
     }
 
     if (passwordRef.current.value !== confirmPasswordRef.current.value) {
       setValidationMessage("Passwords do not match");
-      setSuccessMessage("")
+      setSuccessMessage("");
       return;
     }
 
@@ -61,31 +75,37 @@ const ForgotPasswordComplete = () => {
 
       console.log("resp: ", response.data.message);
 
-      setSuccessMessage("Password Updated Successfully")
+      setSuccessMessage("Password Updated Successfully");
 
       setTimeout(() => {
-        navigate("/login"
-        // , { state: { 
-        //   email: emailRef.current.value,
-        //   password: passwordRef.current.value
-        //  }}
-         );
+        navigate(
+          "/login"
+          // , { state: {
+          //   email: emailRef.current.value,
+          //   password: passwordRef.current.value
+          //  }}
+        );
       }, 3000);
-
     } catch (error) {
       console.log(error);
       setSuccessMessage("");
       setValidationMessage("Invalid OTP");
     }
-
   };
 
   return (
     <div className="authContainer">
-      <h3 className="desktopHeading center">Forgot<br />Password</h3>
-      <div className='logoCont'>
-        <img src={logo} className='logo' alt="logo" />
-        <h1 className='line'><span className='black'>We</span><span> App</span></h1>
+      <h3 className="desktopHeading center">
+        Forgot
+        <br />
+        Password
+      </h3>
+      <div className="logoCont">
+        <img src={logo} className="logo" alt="logo" />
+        <h1 className="line">
+          <span className="black">We</span>
+          <span> App</span>
+        </h1>
         <p>Make Your Own</p>
         <p className="leftLogo">
           <Link to="/login" className="center">
@@ -96,9 +116,16 @@ const ForgotPasswordComplete = () => {
           </Link>
         </p>
       </div>
-      <form className="login c jcc ais login-signup" onSubmit={completeForgotPassword}>
-        <div className='topHeading'>
-          <h2 className="center mobileHeading">Forgot<br />Password</h2>
+      <form
+        className="login c jcc ais login-signup"
+        onSubmit={completeForgotPassword}
+      >
+        <div className="topHeading">
+          <h2 className="center mobileHeading">
+            Forgot
+            <br />
+            Password
+          </h2>
         </div>
         <input
           required
@@ -149,13 +176,14 @@ const ForgotPasswordComplete = () => {
           placeholder="Enter 6 Digit Code"
           minLength="6"
           maxLength="6"
+          value={location.state.otp}
         />
         <p className="validationMessage">{validationMessage}</p>
         <p className="successMessage">{successMessage}</p>
         <button type="submit" className="button">
           Update Password
         </button>
-        <div className='last forgotWhite'>
+        <div className="last forgotWhite">
           <p className="center">
             <Link to="/login" className="center">
               Login
