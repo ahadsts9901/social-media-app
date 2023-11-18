@@ -9,6 +9,8 @@ import fs from "fs";
 const db = client.db("weapp")
 const col = db.collection("posts")
 const userCollection = db.collection("auth")
+const commentsCollection = db.collection("comments")
+const chatCol = db.collection("chats")
 
 //==============================================
 const storageConfig = diskStorage({ // https://www.npmjs.com/package/multer#diskstorage
@@ -498,11 +500,41 @@ router.post('/profilePicture', (req, res, next) => {
                         if (!err) {
                             console.log("public downloadable url: ", urlData[0]) // this is public downloadable url 
                             try {
-                                const updateResponse = await userCollection.updateOne(
+
+                                // update user
+
+                                const userUpdateResponse = await userCollection.updateOne(
                                     { _id: new ObjectId(req.body.userId) },
                                     { $set: { profileImage: urlData[0] } }
                                 );
-                                console.log(updateResponse)
+
+                                // update all posts of user
+
+                                const postsUpdateResponse = await col.updateMany(
+                                    { userId: new ObjectId(req.body.userId) },
+                                    { $set: { userImage: urlData[0] } }
+                                );
+
+                                // update all comments of user
+
+                                const commentsUpdateResponse = await commentsCollection.updateMany(
+                                    { userId: new ObjectId(req.body.userId) },
+                                    { $set: { userImage: urlData[0] } }
+                                );
+
+                                // Update user image URL in Post collection's likes array
+
+                                const postsLikesUpdateResponse = await col.updateMany(
+                                    { 'likes.userId': new ObjectId(req.body.userId) },
+                                    { $set: { 'likes.$.profileImage': urlData[0] } }
+                                );
+
+                                // Update user image URL in comments collection's likes array
+
+                                const commentsLikesUpdateResponse = await commentsCollection.updateMany(
+                                    { 'likes.userId': new ObjectId(req.body.userId) },
+                                    { $set: { 'likes.$.profileImage': urlData[0] } }
+                                );
 
                                 res.send('profile uploaded');
                             } catch (e) {
@@ -530,5 +562,66 @@ router.post('/profilePicture', (req, res, next) => {
                 }
             });
     })
+
+// name change
+
+router.put('/update-name', async (req, res, next) => {
+    if (!req.body.firstName || !req.body.lastName || !req.body.userId) {
+        res.status(403);
+        res.send(`Required parameters missing, example request body:
+        {
+            "firstName": "Abdul",
+            "lastName": "Ahad",
+            "userId": "12345678"
+        }`);
+        return;
+    }
+
+    let { firstName, lastName, userId } = req.body;
+
+    userId = new ObjectId(userId);
+
+    console.log(firstName, lastName, userId);
+
+    try {
+        // Update user
+        const userUpdateResponse = await userCollection.updateOne(
+            { _id: userId },
+            { $set: { firstName: firstName, lastName: lastName } }
+        );
+
+        // Update all posts of user
+        const postsUpdateResponse = await col.updateMany(
+            { userId: userId },
+            { $set: { title: `${firstName} ${lastName}` } }
+        );
+
+        // Update all comments of user
+        const commentsUpdateResponse = await commentsCollection.updateMany(
+            { userId: userId },
+            { $set: { userName: `${firstName} ${lastName}` } }
+        );
+
+        // Update user name in Post collection's likes array
+        const postsLikesUpdateResponse = await col.updateMany(
+            { 'likes.userId': userId },
+            { $set: { 'likes.$.firstName': firstName, 'likes.$.lastName': lastName } }
+        );
+
+        // Update user name in comments collection's likes array
+        const commentsLikesUpdateResponse = await commentsCollection.updateMany(
+            { 'likes.userId': userId },
+            { $set: { 'likes.$.firstName': firstName, 'likes.$.lastName': lastName } }
+        );
+
+        // Send a success response to the client
+        res.status(200).json({ success: true, message: 'Name updated successfully' });
+    } catch (error) {
+        console.error(error);
+        // Send an error response to the client
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
 
 export default router
