@@ -6,6 +6,7 @@
     align-items: center;
     padding: 0.5em 0em;
     margin: 0 auto;
+    overflow-y: auto;
 }
 
 .commentSection {
@@ -18,7 +19,7 @@
     justify-content: start;
     align-items: center;
     gap: 1em;
-    padding: 0;
+    padding: 0.5em 0em;
 }
 
 .seeWhoLiked {
