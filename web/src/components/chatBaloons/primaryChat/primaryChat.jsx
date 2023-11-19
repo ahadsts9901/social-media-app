@@ -35,8 +35,8 @@ const PrimaryChat = (props) => {
         {
           state.user.userId === props.from_id ?
             (showAction ? <div className="chatActionCont">
-              < p onClick={() => { props.del(props._id) }}> <TrashFill /> Delete</p>
-              <p onClick={(event) => { props.edit(props._id, event) }} ><PencilFill /> Edit</p>
+              <span onClick={() => { props.del(props._id) }}> <TrashFill /> Delete</span>
+              <span onClick={(event) => { props.edit(props._id, event) }} ><PencilFill /> Edit</span>
             </div> : null)
             : null
         }

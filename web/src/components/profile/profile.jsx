@@ -10,6 +10,7 @@ import { GlobalContext } from "../../context/context";
 import { PencilFill } from "react-bootstrap-icons";
 
 import { baseUrl } from '../../core.mjs';
+import moment from "moment";
 
 const Profile = () => {
   let { state, dispatch } = useContext(GlobalContext);
@@ -36,7 +37,7 @@ const Profile = () => {
 
   if (selectedImage) {
     Swal.fire({
-      title: "Edit Profile",
+      title: "Edit profile picture",
       html: `
         <img src="${selectedImage}" class="profileImageSelect" />
       `,
@@ -69,15 +70,33 @@ const Profile = () => {
           })
           .then(function (response) {
             // console.log(response.data);
-            Swal.fire({
-              icon: "success",
-              title: "Profile Updated",
-              timer: 1000,
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
               showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              }
+            });
+            Toast.fire({
+              // icon: "success",
+              title: "Profile picture updated"
             });
           })
           .catch(function (error) {
             console.log(error);
+            Swal.fire({
+              // icon:"error",
+              title: "Can't update profile picture",
+              timer: 2000,
+              showConfirmButton: false,
+              showCancelButton: true,
+              cancelButtonColorL: "#284352",
+              cancelButtonText: "Ok"
+            });
           });
 
         setSelectedImage("");
@@ -139,15 +158,146 @@ const Profile = () => {
             userId: state.user.userId
           })
 
-          Swal.fire({
-            icon: "success",
-            title: "Profile Updated",
-            timer: 1000,
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
             showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            // icon: "success",
+            title: "Name updated"
           });
 
         } catch (error) {
           console.log(error);
+          Swal.fire({
+            // icon:"error",
+            title: "Can't update name",
+            timer: 2000,
+            showConfirmButton: false,
+            showCancelButton: true,
+            cancelButtonColorL: "#284352",
+            cancelButtonText: "Ok"
+          });
+        }
+
+      }
+    });
+
+  }
+
+  const changeEmail = async () => {
+    Swal.fire({
+      title: 'Update Email',
+      html:
+        `<input id="swal-input1-Email" class="swal2-input" placeholder="New email">` +
+        `<input type="password" id="swal-input2-Password" minLength="4" maxLength="8" class="swal2-input" placeholder="Password">`,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: 'Update',
+      cancelButtonText: 'Cancel',
+      cancelButtonColor: " #284352",
+      confirmButtonColor: " #284352",
+      preConfirm: async () => {
+
+        const email = document.getElementById("swal-input1-Email").value
+        const password = document.getElementById("swal-input2-Password").value
+
+        // Perform email password validation 
+
+        const validatePassword = async (inputId) => {
+
+          const passwordElement = document.getElementById(inputId);
+          const passwordValue = passwordElement.value.trim();
+
+          console.log("yes");
+
+          if (passwordValue === '' || passwordValue > 8) {
+            passwordElement.classList.add('swal-validation-error');
+            return false;
+          } else {
+            passwordElement.classList.remove('swal-validation-error');
+            return true;
+          }
+
+        }
+
+        const validateEmail = (inputId) => {
+
+          const emailElement = document.getElementById(inputId);
+          const emailValue = emailElement.value.trim();
+
+          if (emailValue === '' || !emailValue.endsWith("@gmail.com")) {
+            emailElement.classList.add('swal-validation-error');
+            return false;
+          } else {
+            emailElement.classList.remove('swal-validation-error');
+            return true;
+          }
+
+        }
+
+        if (!validatePassword('swal-input2-Password')) {
+          Swal.showValidationMessage('Invalid Password');
+          return false;
+        }
+
+        if (!validateEmail('swal-input1-Email')) {
+          Swal.showValidationMessage('Invalid Email');
+          return false;
+        }
+
+        Swal.fire({
+          title: `<span class="loader"></span>`,
+          text: "Uploading...please don't cancel",
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          onBeforeOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        try {
+
+          const updateEmailResponse = await axios.put(`${baseUrl}/api/v1/update-email`, {
+            email: email,
+            password: password,
+            userId: state.user.userId
+          })
+
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            // icon: "success",
+            title: "Email updated"
+          });
+
+        } catch (error) {
+          console.log(error);
+          // console.log(error.response.data.message);
+          Swal.fire({
+            title: "Error",
+            text: `${error.response.data.message}`,
+            showConfirmButton: false,
+            showCancelButton: true,
+            cancelButtonColor: "#284352",
+            cancelButtonText: "Ok",
+          });
         }
 
       }
@@ -175,6 +325,7 @@ const Profile = () => {
     try {
       const response = await axios.get(`${baseUrl}/api/v1/profile/${userParamsId || ""}`);
       setProfile(response.data.data);
+      // console.log(response.data.data);
     } catch (error) {
       console.log(error.data);
       setProfile("noUser");
@@ -185,7 +336,7 @@ const Profile = () => {
     Swal.fire({
       title: "Delete Post",
       text: "Are you sure you want to delete this post?",
-      icon: "warning",
+      // icon: "warning",
       showCancelButton: true,
       cancelButtonText: "Cancel",
       confirmButtonText: "Delete",
@@ -198,21 +349,32 @@ const Profile = () => {
         try {
           const response = await axios.delete(`${baseUrl}/api/v1/post/${postId}`);
           // console.log(response.data);
-          Swal.fire({
-            icon: "success",
-            title: "Post Deleted",
-            timer: 1000,
-            showCancelButton: false,
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
             showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            // icon: "success",
+            title: "Post deleted"
           });
           renderCurrentUserPost();
         } catch (error) {
           console.log(error.data);
           Swal.fire({
-            icon: "error",
+            // icon:"error",
             title: "Failed to delete post",
-            text: error.data,
+            timer: 2000,
             showConfirmButton: false,
+            showCancelButton: true,
+            cancelButtonColorL: "#284352",
+            cancelButtonText: "Ok"
           });
         }
       },
@@ -252,21 +414,33 @@ const Profile = () => {
               })
               .then((response) => {
                 // console.log(response.data);
-                Swal.fire({
-                  icon: "success",
-                  title: "Post Updated",
-                  timer: 1000,
+                const Toast = Swal.mixin({
+                  toast: true,
+                  position: "top-end",
                   showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                  }
+                });
+                Toast.fire({
+                  // icon: "success",
+                  title: "Post updated"
                 });
                 renderCurrentUserPost();
               })
               .catch((error) => {
                 // console.log(error.response.data);
                 Swal.fire({
-                  icon: "error",
+                  // icon:"error",
                   title: "Failed to update post",
-                  text: error.response.data,
+                  timer: 2000,
                   showConfirmButton: false,
+                  showCancelButton: true,
+                  cancelButtonColorL: "#284352",
+                  cancelButtonText: "Ok"
                 });
               });
           },
@@ -275,10 +449,13 @@ const Profile = () => {
       .catch((error) => {
         // console.log(error.response.data);
         Swal.fire({
-          icon: "error",
+          // icon:"error",
           title: "Failed to fetch post",
-          text: error.response.data,
+          timer: 2000,
           showConfirmButton: false,
+          showCancelButton: true,
+          cancelButtonColorL: "#284352",
+          cancelButtonText: "Ok"
         });
       });
   }
@@ -289,7 +466,7 @@ const Profile = () => {
     Swal.fire({
       title: "Logout",
       text: "Are you sure you want to log out?",
-      icon: "warning",
+      // icon: "warning",
       showCancelButton: true,
       cancelButtonText: "Cancel",
       confirmButtonText: "Log Out",
@@ -309,16 +486,171 @@ const Profile = () => {
           })
           .catch(function (error) {
             Swal.fire({
-              icon: "error",
+              // icon:"error",
               title: "Can't logout",
-              timer: 1000,
+              timer: 2000,
               showConfirmButton: false,
+              showCancelButton: true,
+              cancelButtonColorL: "#284352",
+              cancelButtonText: "Ok"
             });
             return false;
           });
       },
     });
   };
+
+  const deleteAccount = async () => {
+    Swal.fire({
+      title: 'Delete account',
+      html:
+        `<input type="password" id="swal-input2-Password-delete" minLength="4" maxLength="8" class="swal2-input" placeholder="Password">`,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: 'Update',
+      cancelButtonText: 'Cancel',
+      cancelButtonColor: " #284352",
+      confirmButtonColor: " #284352",
+      preConfirm: async () => {
+
+        const password = document.getElementById("swal-input2-Password").value
+
+        // Perform email password validation 
+
+        const validatePassword = async (inputId) => {
+
+          const passwordElement = document.getElementById(inputId);
+          const passwordValue = passwordElement.value.trim();
+
+          console.log("yes");
+
+          if (passwordValue === '' || passwordValue > 8) {
+            passwordElement.classList.add('swal-validation-error');
+            return false;
+          } else {
+            passwordElement.classList.remove('swal-validation-error');
+            return true;
+          }
+
+        }
+
+        if (!validatePassword('swal-input2-Password')) {
+          Swal.showValidationMessage('Invalid Password');
+          return false;
+        }
+
+        Swal.fire({
+          title: `<span class="loader"></span>`,
+          text: "Deleting account...please don't cancel",
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          onBeforeOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        try {
+
+          const deleteAccountResponse = await axios.delete(`${baseUrl}/api/v1/delete-account`, {
+            password: password,
+            userId: state.user.userId
+          })
+
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            // icon: "success",
+            title: "Account deleted"
+          });
+
+        } catch (error) {
+          console.log(error);
+          // console.log(error.response.data.message);
+          Swal.fire({
+            title: "Error",
+            text: `${error.response.data.message}`,
+            showConfirmButton: false,
+            showCancelButton: true,
+            cancelButtonColor: "#284352",
+            cancelButtonText: "Ok",
+          });
+        }
+
+      }
+    });
+
+  }
+
+  const deleteAccountAdmin = async (userId) => {
+    Swal.fire({
+      title: 'Delete account',
+      text: "Are you sure to delete this account",
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel',
+      cancelButtonColor: " #284352",
+      confirmButtonColor: " #284352",
+      preConfirm: async () => {
+
+        Swal.fire({
+          title: `<span class="loader"></span>`,
+          text: "Deleting account...please don't cancel",
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          onBeforeOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        try {
+
+          const deleteAccountResponse = await axios.delete(`${baseUrl}/api/v1/delete-account-admin`, {
+            userId: userId
+          })
+
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            // icon: "success",
+            title: "Account deleted"
+          });
+
+        } catch (error) {
+          console.log(error);
+          // console.log(error.response.data.message);
+          Swal.fire({
+            title: "Error",
+            text: `${error.response.data.message}`,
+            showConfirmButton: false,
+            showCancelButton: true,
+            cancelButtonColor: "#284352",
+            cancelButtonText: "Ok",
+          });
+        }
+
+      }
+    });
+
+  }
 
   return (
     <div className="posts">
@@ -341,6 +673,17 @@ const Profile = () => {
               ) : null}
             </h2>
 
+            <h3 className="profileEmail">
+              {
+                state.user.userId === profile.userId ? <span>
+                  {`${profile.email} `} <PencilFill style={{ fontSize: "0.7em" }} onClick={changeEmail} />
+                </span> : null
+              }
+              <span style={{ color: "#212121" }}>
+                Joined {`${moment(profile.createdOn).format('ll')} `}
+              </span>
+            </h3>
+
             <div className="profileActions">
               <button
                 className="logOutButton"
@@ -356,6 +699,30 @@ const Profile = () => {
                 </button>
               ) : null}
             </div>
+
+
+            {
+              (state.user.userId === profile.userId) ?
+
+                <h2 className="delAcc" onClick={deleteAccount}>
+                  Delete Account
+                </h2>
+
+                : null
+            }
+
+
+            {
+              (state.user.isAdmin == true) ?
+
+                <h2 className="delAcc" onClick={() => { deleteAccountAdmin(profile.userId) }}>
+                  Delete Account
+                </h2>
+
+                : null
+            }
+
+
 
             <div className="profileImageContainer">
               <label className="editIMG" htmlFor="profileImage">

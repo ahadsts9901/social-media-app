@@ -37,21 +37,50 @@ const Create = () => {
     formData.append("userId", userId);
     formData.append("userImage", state.user.profileImage);
 
+    Swal.fire({
+      title: `<span class="loader"></span>`,
+      text: "Post creating...please don't cancel",
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      onBeforeOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
     axios
       .post(`${baseUrl}/api/v1/post`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then(function (response) {
         // console.log(response.data);
-        Swal.fire({
-          icon: "success",
-          title: "Post Added",
-          timer: 1000,
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
           showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          }
+        });
+        Toast.fire({
+          // icon: "success",
+          title: "Post created"
         });
       })
       .catch(function (error) {
         console.log(error)
+        Swal.fire({
+          // icon:"error",
+          title: "Error",
+          text: `${error.response.data.message}` ,
+          // timer: 2000,
+          showConfirmButton: false,
+          showCancelButton: true,
+          cancelButtonColorL:"#284352",
+          cancelButtonText:"Ok"
+        });
       });
 
     postText.value = "";

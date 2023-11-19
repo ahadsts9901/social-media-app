@@ -15,7 +15,7 @@ const ForgotPasswordComplete = () => {
 
   useEffect(()=>{
     Swal.fire({
-      icon: "info",
+      // icon: "info",
       text: "Your OTP code dont share it",
       title: otp,
       showConfirmButton: true,

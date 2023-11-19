@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import axios from "axios";
-// import Swal from 'sweetalert2';
 import "./home.css";
 import { Post, NoPost } from "../post/post";
 import { useNavigate } from "react-router-dom";
@@ -87,7 +86,7 @@ const Home = () => {
     Swal.fire({
       title: "Delete Post",
       text: "Are you sure you want to delete this post?",
-      icon: "warning",
+      // icon: "warning",
       showCancelButton: true,
       cancelButtonText: "Cancel",
       confirmButtonText: "Delete",
@@ -102,21 +101,32 @@ const Home = () => {
             `${baseUrl}/api/v1/post/${postId}`
           );
           // console.log(response.data);
-          Swal.fire({
-            icon: "success",
-            title: "Post Deleted",
-            timer: 1000,
-            showCancelButton: false,
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
             showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            // icon: "success",
+            title: "Post deleted"
           });
           renderPost();
         } catch (error) {
           console.log(error.data);
           Swal.fire({
-            icon: "error",
+            // icon:"error",
             title: "Failed to delete post",
-            text: error.data,
+            timer: 2000,
             showConfirmButton: false,
+            showCancelButton: true,
+            cancelButtonColorL:"#284352",
+            cancelButtonText:"Ok"
           });
         }
       },
@@ -156,21 +166,33 @@ const Home = () => {
               })
               .then((response) => {
                 // console.log(response.data);
-                Swal.fire({
-                  icon: "success",
-                  title: "Post Updated",
-                  timer: 1000,
+                const Toast = Swal.mixin({
+                  toast: true,
+                  position: "top-end",
                   showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                  }
+                });
+                Toast.fire({
+                  // icon: "success",
+                  title: "Post updated"
                 });
                 renderPost();
               })
               .catch((error) => {
                 // console.log(error.response.data);
                 Swal.fire({
-                  icon: "error",
+                  // icon:"error",
                   title: "Failed to update post",
-                  text: error.response.data,
+                  timer: 2000,
                   showConfirmButton: false,
+                  showCancelButton: true,
+                  cancelButtonColorL:"#284352",
+                  cancelButtonText:"Ok"
                 });
               });
           },
@@ -179,10 +201,13 @@ const Home = () => {
       .catch((error) => {
         // console.log(error.response.data);
         Swal.fire({
-          icon: "error",
+          // icon:"error",
           title: "Failed to fetch post",
-          text: error.response.data,
+          timer: 2000,
           showConfirmButton: false,
+          showCancelButton: true,
+          cancelButtonColorL:"#284352",
+          cancelButtonText:"Ok"
         });
       });
   }

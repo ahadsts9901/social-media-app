@@ -101,12 +101,20 @@ const ChatScreen = () => {
       });
 
       // console.log(response.data);
-
-      Swal.fire({
-        icon: "success",
-        title: "Message Sent",
-        timer: 1000,
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
         showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        // icon: "success",
+        title: "Message sent"
       });
       getMessages();
 
@@ -130,7 +138,7 @@ const ChatScreen = () => {
     Swal.fire({
       title: "Delete Message",
       text: "Delete for everyone ?",
-      icon: "warning",
+      // icon: "warning",
       showCancelButton: true,
       cancelButtonText: "Cancel",
       confirmButtonText: "Delete",
@@ -141,23 +149,34 @@ const ChatScreen = () => {
       showLoaderOnConfirm: true,
       preConfirm: async () => {
         try {
-          const response = await axios.delete(`${baseUrl}/api/v1/message/${messageId}`);
+          const response = await axios.delete(`${baseUrl}/api/v1/message/everyone/${messageId}`);
           // console.log(response.data);
-          Swal.fire({
-            icon: "success",
-            title: "Message Deleted",
-            timer: 1000,
-            showCancelButton: false,
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
             showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            // icon: "success",
+            title: "Message deleted"
           });
           getMessages();
         } catch (error) {
           console.log(error.data);
           Swal.fire({
-            icon: "error",
+            // icon:"error",
             title: "Failed to delete message",
-            text: error.data,
+            timer: 2000,
             showConfirmButton: false,
+            showCancelButton: true,
+            cancelButtonColorL:"#284352",
+            cancelButtonText:"Ok"
           });
         }
       },
@@ -195,11 +214,20 @@ const ChatScreen = () => {
           });
 
           if (response.status === 200) {
-            Swal.fire({
-              icon: "success",
-              title: "Message Updated",
-              timer: 1000,
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
               showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              }
+            });
+            Toast.fire({
+              // icon: "success",
+              title: "Message updated"
             });
             getMessages();
           } else {
@@ -208,9 +236,13 @@ const ChatScreen = () => {
         } catch (error) {
           console.error(error);
           Swal.fire({
-            icon: "error",
+            // icon:"error",
             title: "Failed to update message",
+            timer: 2000,
             showConfirmButton: false,
+            showCancelButton: true,
+            cancelButtonColorL:"#284352",
+            cancelButtonText:"Ok"
           });
         }
       },
@@ -221,7 +253,7 @@ const ChatScreen = () => {
     Swal.fire({
       title: "Clear chat ?",
       text: "Do you want to clear chat ?",
-      icon: "warning",
+      // icon: "warning",
       showCancelButton: true,
       cancelButtonText: "Cancel",
       confirmButtonText: "Delete",
@@ -236,22 +268,33 @@ const ChatScreen = () => {
             `${baseUrl}/api/v1/messages/${from_id}/${to_id}`
           );
           // console.log(response.data);
-          Swal.fire({
-            icon: "success",
-            title: "Chat cleared",
-            timer: 1000,
-            showCancelButton: false,
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
             showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            // icon: "success",
+            title: "Chat cleared"
           });
           setShowMenu(false);
           getMessages();
         } catch (error) {
           console.log(error.data);
           Swal.fire({
-            icon: "error",
-            title: "Failed to delete message",
-            text: error.data,
+            // icon:"error",
+            title: "Can't clear chat",
+            timer: 2000,
             showConfirmButton: false,
+            showCancelButton: true,
+            cancelButtonColorL:"#284352",
+            cancelButtonText:"Ok"
           });
         }
       },

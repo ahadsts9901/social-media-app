@@ -114,3 +114,13 @@ h6 {
         transform: rotate(360deg);
     }
 }
+
+@media(max-width:425px){
+    .result::-moz-scrollbar {
+       display: none;
+    }
+    
+    .result::-webkit-scrollbar {
+        display: none;
+    }
+}
