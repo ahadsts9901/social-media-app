@@ -134,7 +134,7 @@ router.get('/messages/:from_id', (req, res, next) => {
 
 });
 
-router.delete('/message/:messageId', async (req, res, next) => {
+router.delete('/message/everyone/:messageId', async (req, res, next) => {
 
   const messageId = new ObjectId(req.params.messageId);
 
@@ -174,47 +174,27 @@ router.put('/message/:messageId', async (req, res, next) => {
   }
 });
 
-// router.put('/message/everyone/:messageId', async (req, res, next) => {
-
-//   const messageId = new ObjectId(req.params.messageId);
-//   const { message } = req.body;
-
-//   console.log("message", message);
+// router.delete('/messages/:from_id/:to_id', async (req, res, next) => {
+//   const from_id = new ObjectId(req.params.from_id);
+//   const to_id = new ObjectId(req.params.to_id);
 
 //   try {
-//     const updateResponse = await chatCol.updateOne({ _id: messageId }, { $set: { unsend : true } });
+//     const deleteResponse = await chatCol.deleteMany({
+//       $or: [
+//         { from_id: from_id, to_id: to_id },
+//         { from_id: to_id, to_id: from_id }
+//       ]
+//     });
 
-//     if (updateResponse.matchedCount === 1) {
-//       res.send(`Message with id ${messageId} unsend successfully.`);
+//     if (deleteResponse.deletedCount > 0) {
+//       res.send(`${deleteResponse.deletedCount} messages deleted successfully.`);
 //     } else {
-//       res.send('Message not found with the given id.');
+//       res.send('No messages found to delete.');
 //     }
 //   } catch (error) {
 //     console.error(error);
+//     res.status(500).send('Internal Server Error');
 //   }
 // });
-
-router.delete('/messages/:from_id/:to_id', async (req, res, next) => {
-  const from_id = new ObjectId(req.params.from_id);
-  const to_id = new ObjectId(req.params.to_id);
-
-  try {
-    const deleteResponse = await chatCol.deleteMany({
-      $or: [
-        { from_id: from_id, to_id: to_id },
-        { from_id: to_id, to_id: from_id }
-      ]
-    });
-
-    if (deleteResponse.deletedCount > 0) {
-      res.send(`${deleteResponse.deletedCount} messages deleted successfully.`);
-    } else {
-      res.send('No messages found to delete.');
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
-  }
-});
 
 export default router;
