@@ -719,6 +719,9 @@ router.put('/update-email', async (req, res, next) => {
 // delete account
 
 router.delete('/delete-account', async (req, res, next) => {
+
+    console.log(req.body);
+
     if (!req.body.password || !req.body.userId) {
         res.status(403);
         res.send(`Required parameters missing, example request body:
@@ -790,9 +793,9 @@ router.delete('/delete-account', async (req, res, next) => {
 
 router.delete('/delete-account-admin', async (req, res, next) => {
 
-    console.log(req.body.userId);
+    console.log(req.query.userId);
 
-    if (!req.body.userId) {
+    if (!req.query.userId) {
         res.status(403);
         res.send(`Required parameters missing, example request body:
         {
@@ -801,7 +804,7 @@ router.delete('/delete-account-admin', async (req, res, next) => {
         return;
     }
 
-    let { userId } = req.body;
+    let { userId } = req.query;
 
     if (!ObjectId.isValid(userId)) {
         res.status(403).send(`Invalid user id`);
