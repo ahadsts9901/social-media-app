@@ -9,13 +9,13 @@ import { useParams } from "react-router-dom";
 import { GlobalContext } from "../../context/context";
 import { PencilFill } from "react-bootstrap-icons";
 
-import { baseUrl } from '../../core.mjs';
+import { baseUrl } from "../../core.mjs";
 import moment from "moment";
 
 const Profile = () => {
   let { state, dispatch } = useContext(GlobalContext);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [userPosts, setUserPosts] = useState([]);
   const [profile, setProfile] = useState([]);
@@ -25,6 +25,8 @@ const Profile = () => {
 
   // const userId = state.user.userId
   const { userParamsId } = useParams();
+
+  // console.log(profile);
 
   useEffect(() => {
     renderCurrentUserPost();
@@ -79,11 +81,11 @@ const Profile = () => {
               didOpen: (toast) => {
                 toast.onmouseenter = Swal.stopTimer;
                 toast.onmouseleave = Swal.resumeTimer;
-              }
+              },
             });
             Toast.fire({
               // icon: "success",
-              title: "Profile picture updated"
+              title: "Profile picture updated",
             });
           })
           .catch(function (error) {
@@ -95,7 +97,7 @@ const Profile = () => {
               showConfirmButton: false,
               showCancelButton: true,
               cancelButtonColorL: "#284352",
-              cancelButtonText: "Ok"
+              cancelButtonText: "Ok",
             });
           });
 
@@ -106,37 +108,37 @@ const Profile = () => {
 
   const changeName = async () => {
     Swal.fire({
-      title: 'Update Name',
+      title: "Update Name",
       html:
         `<input id="swal-input1" minLength="3" maxLength="10" class="swal2-input" placeholder="First Name" value="${state.user.firstName}">` +
         `<input id="swal-input2" minLength="3" maxLength="10" class="swal2-input" placeholder="Last Name" value="${state.user.lastName}">`,
       focusConfirm: false,
       showCancelButton: true,
-      confirmButtonText: 'Update',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: "Update",
+      cancelButtonText: "Cancel",
       cancelButtonColor: " #284352",
       confirmButtonColor: " #284352",
       preConfirm: async () => {
-        const firstName = document.getElementById('swal-input1').value;
-        const lastName = document.getElementById('swal-input2').value;
+        const firstName = document.getElementById("swal-input1").value;
+        const lastName = document.getElementById("swal-input2").value;
 
-        // Perform input validation 
+        // Perform input validation
 
         const validateInput = (inputId) => {
           const inputElement = document.getElementById(inputId);
           const inputValue = inputElement.value.trim();
 
-          if (inputValue === '') {
-            inputElement.classList.add('swal-validation-error');
+          if (inputValue === "") {
+            inputElement.classList.add("swal-validation-error");
             return false;
           } else {
-            inputElement.classList.remove('swal-validation-error');
+            inputElement.classList.remove("swal-validation-error");
             return true;
           }
-        }
+        };
 
-        if (!validateInput('swal-input1') || !validateInput('swal-input2')) {
-          Swal.showValidationMessage('Please fill in both fields');
+        if (!validateInput("swal-input1") || !validateInput("swal-input2")) {
+          Swal.showValidationMessage("Please fill in both fields");
           return false;
         }
 
@@ -151,12 +153,14 @@ const Profile = () => {
         });
 
         try {
-
-          const updateNameResponse = await axios.put(`${baseUrl}/api/v1/update-name`, {
-            firstName: firstName,
-            lastName: lastName,
-            userId: state.user.userId
-          })
+          const updateNameResponse = await axios.put(
+            `${baseUrl}/api/v1/update-name`,
+            {
+              firstName: firstName,
+              lastName: lastName,
+              userId: state.user.userId,
+            }
+          );
 
           const Toast = Swal.mixin({
             toast: true,
@@ -167,13 +171,12 @@ const Profile = () => {
             didOpen: (toast) => {
               toast.onmouseenter = Swal.stopTimer;
               toast.onmouseleave = Swal.resumeTimer;
-            }
+            },
           });
           Toast.fire({
             // icon: "success",
-            title: "Name updated"
+            title: "Name updated",
           });
-
         } catch (error) {
           console.log(error);
           Swal.fire({
@@ -183,73 +186,66 @@ const Profile = () => {
             showConfirmButton: false,
             showCancelButton: true,
             cancelButtonColorL: "#284352",
-            cancelButtonText: "Ok"
+            cancelButtonText: "Ok",
           });
         }
-
-      }
+      },
     });
-
-  }
+  };
 
   const changeEmail = async () => {
     Swal.fire({
-      title: 'Update Email',
+      title: "Update Email",
       html:
         `<input id="swal-input1-Email" class="swal2-input" placeholder="New email">` +
         `<input type="password" id="swal-input2-Password" minLength="4" maxLength="8" class="swal2-input" placeholder="Password">`,
       focusConfirm: false,
       showCancelButton: true,
-      confirmButtonText: 'Update',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: "Update",
+      cancelButtonText: "Cancel",
       cancelButtonColor: " #284352",
       confirmButtonColor: " #284352",
       preConfirm: async () => {
+        const email = document.getElementById("swal-input1-Email").value;
+        const password = document.getElementById("swal-input2-Password").value;
 
-        const email = document.getElementById("swal-input1-Email").value
-        const password = document.getElementById("swal-input2-Password").value
-
-        // Perform email password validation 
+        // Perform email password validation
 
         const validatePassword = async (inputId) => {
-
           const passwordElement = document.getElementById(inputId);
           const passwordValue = passwordElement.value.trim();
 
           console.log("yes");
 
-          if (passwordValue === '' || passwordValue > 8) {
-            passwordElement.classList.add('swal-validation-error');
+          if (passwordValue === "" || passwordValue > 8) {
+            passwordElement.classList.add("swal-validation-error");
             return false;
           } else {
-            passwordElement.classList.remove('swal-validation-error');
+            passwordElement.classList.remove("swal-validation-error");
             return true;
           }
-
-        }
+        };
 
         const validateEmail = (inputId) => {
-
           const emailElement = document.getElementById(inputId);
           const emailValue = emailElement.value.trim();
 
-          if (emailValue === '' || !emailValue.endsWith("@gmail.com")) {
-            emailElement.classList.add('swal-validation-error');
+          if (emailValue === "" || !emailValue.endsWith("@gmail.com")) {
+            emailElement.classList.add("swal-validation-error");
             return false;
           } else {
-            emailElement.classList.remove('swal-validation-error');
+            emailElement.classList.remove("swal-validation-error");
             return true;
           }
+        };
 
-        }
-
-        if (!validatePassword('swal-input2-Password')) {
-          Swal.showValidationMessage('Invalid Password');
+        if (!validatePassword("swal-input2-Password")) {
+          Swal.showValidationMessage("Invalid Password");
           return false;
         }
 
-        if (!validateEmail('swal-input1-Email')) {
-          Swal.showValidationMessage('Invalid Email');
+        if (!validateEmail("swal-input1-Email")) {
+          Swal.showValidationMessage("Invalid Email");
           return false;
         }
 
@@ -264,12 +260,14 @@ const Profile = () => {
         });
 
         try {
-
-          const updateEmailResponse = await axios.put(`${baseUrl}/api/v1/update-email`, {
-            email: email,
-            password: password,
-            userId: state.user.userId
-          })
+          const updateEmailResponse = await axios.put(
+            `${baseUrl}/api/v1/update-email`,
+            {
+              email: email,
+              password: password,
+              userId: state.user.userId,
+            }
+          );
 
           const Toast = Swal.mixin({
             toast: true,
@@ -280,13 +278,12 @@ const Profile = () => {
             didOpen: (toast) => {
               toast.onmouseenter = Swal.stopTimer;
               toast.onmouseleave = Swal.resumeTimer;
-            }
+            },
           });
           Toast.fire({
             // icon: "success",
-            title: "Email updated"
+            title: "Email updated",
           });
-
         } catch (error) {
           console.log(error);
           // console.log(error.response.data.message);
@@ -299,11 +296,9 @@ const Profile = () => {
             cancelButtonText: "Ok",
           });
         }
-
-      }
+      },
     });
-
-  }
+  };
 
   const renderCurrentUserPost = () => {
     axios
@@ -323,7 +318,9 @@ const Profile = () => {
 
   const getProfile = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/api/v1/profile/${userParamsId || ""}`);
+      const response = await axios.get(
+        `${baseUrl}/api/v1/profile/${userParamsId || ""}`
+      );
       setProfile(response.data.data);
       // console.log(response.data.data);
     } catch (error) {
@@ -347,7 +344,9 @@ const Profile = () => {
       showLoaderOnConfirm: true,
       preConfirm: async () => {
         try {
-          const response = await axios.delete(`${baseUrl}/api/v1/post/${postId}`);
+          const response = await axios.delete(
+            `${baseUrl}/api/v1/post/${postId}`
+          );
           // console.log(response.data);
           const Toast = Swal.mixin({
             toast: true,
@@ -358,11 +357,11 @@ const Profile = () => {
             didOpen: (toast) => {
               toast.onmouseenter = Swal.stopTimer;
               toast.onmouseleave = Swal.resumeTimer;
-            }
+            },
           });
           Toast.fire({
             // icon: "success",
-            title: "Post deleted"
+            title: "Post deleted",
           });
           renderCurrentUserPost();
         } catch (error) {
@@ -374,7 +373,7 @@ const Profile = () => {
             showConfirmButton: false,
             showCancelButton: true,
             cancelButtonColorL: "#284352",
-            cancelButtonText: "Ok"
+            cancelButtonText: "Ok",
           });
         }
       },
@@ -423,11 +422,11 @@ const Profile = () => {
                   didOpen: (toast) => {
                     toast.onmouseenter = Swal.stopTimer;
                     toast.onmouseleave = Swal.resumeTimer;
-                  }
+                  },
                 });
                 Toast.fire({
                   // icon: "success",
-                  title: "Post updated"
+                  title: "Post updated",
                 });
                 renderCurrentUserPost();
               })
@@ -440,7 +439,7 @@ const Profile = () => {
                   showConfirmButton: false,
                   showCancelButton: true,
                   cancelButtonColorL: "#284352",
-                  cancelButtonText: "Ok"
+                  cancelButtonText: "Ok",
                 });
               });
           },
@@ -455,7 +454,7 @@ const Profile = () => {
           showConfirmButton: false,
           showCancelButton: true,
           cancelButtonColorL: "#284352",
-          cancelButtonText: "Ok"
+          cancelButtonText: "Ok",
         });
       });
   }
@@ -492,7 +491,7 @@ const Profile = () => {
               showConfirmButton: false,
               showCancelButton: true,
               cancelButtonColorL: "#284352",
-              cancelButtonText: "Ok"
+              cancelButtonText: "Ok",
             });
             return false;
           });
@@ -502,40 +501,38 @@ const Profile = () => {
 
   const deleteAccount = async () => {
     Swal.fire({
-      title: 'Delete account',
-      html:
-        `<input type="password" id="swal-input2-Password-delete" minLength="4" maxLength="8" class="swal2-input" placeholder="Password">`,
+      title: "Delete account",
+      html: `<input type="password" id="swal-input2-Password-delete" minLength="4" maxLength="8" class="swal2-input" placeholder="Password">`,
       focusConfirm: false,
       showCancelButton: true,
-      confirmButtonText: 'Update',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: "Delete",
+      cancelButtonText: "Cancel",
       cancelButtonColor: " #284352",
       confirmButtonColor: " #284352",
       preConfirm: async () => {
+        const password = document.getElementById(
+          "swal-input2-Password-delete"
+        ).value;
 
-        const password = document.getElementById("swal-input2-Password").value
-
-        // Perform email password validation 
+        // Perform email password validation
 
         const validatePassword = async (inputId) => {
-
           const passwordElement = document.getElementById(inputId);
           const passwordValue = passwordElement.value.trim();
 
           console.log("yes");
 
-          if (passwordValue === '' || passwordValue > 8) {
-            passwordElement.classList.add('swal-validation-error');
+          if (passwordValue === "" || passwordValue > 8) {
+            passwordElement.classList.add("swal-validation-error");
             return false;
           } else {
-            passwordElement.classList.remove('swal-validation-error');
+            passwordElement.classList.remove("swal-validation-error");
             return true;
           }
+        };
 
-        }
-
-        if (!validatePassword('swal-input2-Password')) {
-          Swal.showValidationMessage('Invalid Password');
+        if (!validatePassword("swal-input2-Password-delete")) {
+          Swal.showValidationMessage("Invalid Password");
           return false;
         }
 
@@ -550,11 +547,18 @@ const Profile = () => {
         });
 
         try {
-
-          const deleteAccountResponse = await axios.delete(`${baseUrl}/api/v1/delete-account`, {
-            password: password,
-            userId: state.user.userId
-          })
+          const deleteAccountResponse = await axios.delete(
+            `${baseUrl}/api/v1/delete-account`,
+            {
+              data: {
+                password: password,
+                userId: state.user.userId,
+              },
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
 
           const Toast = Swal.mixin({
             toast: true,
@@ -565,13 +569,12 @@ const Profile = () => {
             didOpen: (toast) => {
               toast.onmouseenter = Swal.stopTimer;
               toast.onmouseleave = Swal.resumeTimer;
-            }
+            },
           });
           Toast.fire({
             // icon: "success",
-            title: "Account deleted"
+            title: "Account deleted",
           });
-
         } catch (error) {
           console.log(error);
           // console.log(error.response.data.message);
@@ -584,24 +587,21 @@ const Profile = () => {
             cancelButtonText: "Ok",
           });
         }
-
-      }
+      },
     });
+  };
 
-  }
-
-  const deleteAccountAdmin = async (userId) => {
+  const deleteAccountAdmin = async () => {
     Swal.fire({
-      title: 'Delete account',
+      title: "Delete account",
       text: "Are you sure to delete this account",
       focusConfirm: false,
       showCancelButton: true,
-      confirmButtonText: 'Delete',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: "Delete",
+      cancelButtonText: "Cancel",
       cancelButtonColor: " #284352",
       confirmButtonColor: " #284352",
       preConfirm: async () => {
-
         Swal.fire({
           title: `<span class="loader"></span>`,
           text: "Deleting account...please don't cancel",
@@ -613,10 +613,14 @@ const Profile = () => {
         });
 
         try {
-
-          const deleteAccountResponse = await axios.delete(`${baseUrl}/api/v1/delete-account-admin`, {
-            userId: userId
-          })
+          const deleteAccountResponse = await axios.delete(
+            `${baseUrl}/api/v1/delete-account-admin?userId=${profile.userId}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
 
           const Toast = Swal.mixin({
             toast: true,
@@ -627,13 +631,12 @@ const Profile = () => {
             didOpen: (toast) => {
               toast.onmouseenter = Swal.stopTimer;
               toast.onmouseleave = Swal.resumeTimer;
-            }
+            },
           });
           Toast.fire({
             // icon: "success",
-            title: "Account deleted"
+            title: "Account deleted",
           });
-
         } catch (error) {
           console.log(error);
           // console.log(error.response.data.message);
@@ -646,11 +649,9 @@ const Profile = () => {
             cancelButtonText: "Ok",
           });
         }
-
-      }
+      },
     });
-
-  }
+  };
 
   return (
     <div className="posts">
@@ -659,28 +660,31 @@ const Profile = () => {
       ) : (
         <>
           <div className="profile">
-            <img
-              className="profileIMG"
-              src={
-                profile.profileImage
-              }
-            />
+            <img className="profileIMG" src={profile.profileImage} />
 
             <h2 className="profileName">
               {profile.firstName} {profile.lastName}
               {state.user.userId === profile.userId ? (
-                <PencilFill onClick={changeName} style={{ fontSize: "0.5em" }} className="pencil" />
+                <PencilFill
+                  onClick={changeName}
+                  style={{ fontSize: "0.5em" }}
+                  className="pencil"
+                />
               ) : null}
             </h2>
 
             <h3 className="profileEmail">
-              {
-                state.user.userId === profile.userId ? <span>
-                  {`${profile.email} `} <PencilFill style={{ fontSize: "0.7em" }} onClick={changeEmail} />
-                </span> : null
-              }
+              {state.user.userId === profile.userId ? (
+                <span>
+                  {`${profile.email} `}{" "}
+                  <PencilFill
+                    style={{ fontSize: "0.7em" }}
+                    onClick={changeEmail}
+                  />
+                </span>
+              ) : null}
               <span style={{ color: "#212121" }}>
-                Joined {`${moment(profile.createdOn).format('ll')} `}
+                Joined {`${moment(profile.createdOn).format("ll")} `}
               </span>
             </h3>
 
@@ -700,34 +704,23 @@ const Profile = () => {
               ) : null}
             </div>
 
-
-            {
-              (state.user.userId === profile.userId) ?
-
-                <h2 className="delAcc" onClick={deleteAccount}>
-                  Delete Account
-                </h2>
-
-                : null
-            }
-
-
-            {
-              (state.user.isAdmin == true) ?
-
-                <h2 className="delAcc" onClick={() => { deleteAccountAdmin(profile.userId) }}>
-                  Delete Account
-                </h2>
-
-                : null
-            }
-
-
+            {state.user.isAdmin == true ? (
+              <h2 className="delAcc" onClick={deleteAccountAdmin}>
+                Delete Account
+              </h2>
+            ) : state.user.userId === profile.userId ? (
+              <h2 className="delAcc" onClick={deleteAccount}>
+                Delete Account
+              </h2>
+            ) : null}
 
             <div className="profileImageContainer">
               <label className="editIMG" htmlFor="profileImage">
                 {state.user.userId === profile.userId ? (
-                  <PencilFill style={{ fontSize: "0.8em" }} className="pencil" />
+                  <PencilFill
+                    style={{ fontSize: "0.8em" }}
+                    className="pencil"
+                  />
                 ) : null}
               </label>
               <input
@@ -754,7 +747,7 @@ const Profile = () => {
             ) : (
               userPosts.map((post, index) =>
                 state.user.userId === profile.userId ||
-                  state.isAdmin == true ? (
+                state.isAdmin == true ? (
                   <UserPost
                     key={index}
                     title={post.title}

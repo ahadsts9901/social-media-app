@@ -690,7 +690,7 @@ div:where(.swal2-container) div:where(.swal2-loader) {
 .editIMG {
     color: #284352;
     position: relative;
-    top: -18em!important;
+    top: -16em!important;
     left: 3em!important;
     z-index: 10 !important;
 }
@@ -710,8 +710,8 @@ textarea{
     padding: 1em 0 0 0;
 }
 
-@media(max-width:437px){
+@media(max-width:442px){
     .editIMG {
-        top: -21em!important;
+        top: -19em!important;
     }
 }

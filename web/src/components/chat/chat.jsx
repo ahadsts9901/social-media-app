@@ -51,7 +51,7 @@ const Chat = () => {
         </div>
       </header>
       <form id='chatSearch'>
-        <input type="search" placeholder='Search Here . . .' />
+        <input type="search" placeholder='Search Users Here . . .' />
         <button type='submit'><SearchBs /></button>
       </form>
       <div className='chatUsersChats'>
