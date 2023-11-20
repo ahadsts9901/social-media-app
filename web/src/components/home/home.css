@@ -76,6 +76,12 @@ h6 {
     background-color: #28435200;
 }
 
+
+.result::-webkit-scrollbar {
+    width: 4px;
+    background-color: #28435200;
+}
+
 .result::-moz-scrollbar-thumb {
     width: 4px !important;
     background-color: #284352;
@@ -89,11 +95,6 @@ h6 {
 }
 
 .result::-webkit-scrollbar-track {
-    width: 4px;
-    background-color: #28435200;
-}
-
-.result::-webkit-scrollbar {
     width: 4px;
     background-color: #28435200;
 }
