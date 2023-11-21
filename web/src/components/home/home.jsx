@@ -27,41 +27,41 @@ const Home = () => {
 
   // pagination
 
-  const handleScroll = () => {
-    const container = document.querySelector(".result");
+  // const handleScroll = () => {
+  //   const container = document.querySelector(".result");
 
-    if (container) {
-      // Calculate the sum of the scroll position and the container's client height
-      const scrollSum = container.scrollTop + container.clientHeight;
+  //   if (container) {
+  //     // Calculate the sum of the scroll position and the container's client height
+  //     const scrollSum = container.scrollTop + container.clientHeight;
 
-      // Check if the sum is equal to or greater than the scroll
-      if (scrollSum == container.scrollHeight) {
-        loadMore();
-      }
-    }
-  };
+  //     // Check if the sum is equal to or greater than the scroll
+  //     if (scrollSum == container.scrollHeight) {
+  //       loadMore();
+  //     }
+  //   }
+  // };
 
   // pagination
 
-  const loadMore = () => {
-    axios
-      .get(`${baseUrl}/api/v1/feed?page=${posts.length}`)
-      .then(function (response) {
-        let fetchedPosts = response.data;
-        setPosts((prev) => {
-          return [...prev, ...response.data];
-        });
-      })
-      .catch(function (error) {
-        // console.log(error);
-        let resStatus = error.response.request.status;
-        // console.log(resStatus)
-        if (resStatus === 401) {
-          // console.log("not authorized")
-          navigate("/login");
-        }
-      });
-  };
+  // const loadMore = () => {
+  //   axios
+  //     .get(`${baseUrl}/api/v1/feed?page=${posts.length}`)
+  //     .then(function (response) {
+  //       let fetchedPosts = response.data;
+  //       setPosts((prev) => {
+  //         return [...prev, ...response.data];
+  //       });
+  //     })
+  //     .catch(function (error) {
+  //       // console.log(error);
+  //       let resStatus = error.response.request.status;
+  //       // console.log(resStatus)
+  //       if (resStatus === 401) {
+  //         // console.log("not authorized")
+  //         navigate("/login");
+  //       }
+  //     });
+  // };
 
   const renderPost = () => {
     axios
@@ -214,7 +214,9 @@ const Home = () => {
 
   return (
     <>
-      <div className="result" onScroll={handleScroll}>
+      <div className="result"
+      //  onScroll={handleScroll}
+       >
         {!posts ? (
           <span className="loader"></span>
         ) : posts.length === 0 ? (

@@ -5,12 +5,16 @@ import "./games.css";
 import "../main.css";
 // import { Link, useNavigate } from 'react-router-dom';
 // import logo from "../assets/logoDark.png"
+import { ArrowLeft } from "react-bootstrap-icons";
 
 import { baseUrl } from "../../core.mjs";
 
 const Games = () => {
   return (
-    <div className="test">
+    <>
+      <p className="backGame" onClick={() => { window.history.back() }}>
+      <ArrowLeft />
+      </p>
       {/* <h2>Games</h2> */}
       {/* <h2>Under Construction</h2> */}
       <iframe
@@ -18,7 +22,7 @@ const Games = () => {
         className="gameWeb"
         frameborder="0"
       ></iframe>
-    </div>
+    </>
   );
 };
 

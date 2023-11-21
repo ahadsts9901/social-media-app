@@ -653,6 +653,20 @@ const Profile = () => {
     });
   };
 
+  const seePic = () => {
+    Swal.fire({
+      html: `
+        <img src="${profile.profileImage}" class="profileImageSelect" />
+      `,
+      showCancelButton: false,
+      showConfirmButton: false,
+      // cancelButtonText: "Cancel",
+      // confirmButtonText: "Upload",
+      // cancelButtonColor: "#284352",
+      // confirmButtonColor: "#284352",
+    });
+  };
+
   return (
     <div className="posts">
       {profile === "noUser" ? (
@@ -660,7 +674,11 @@ const Profile = () => {
       ) : (
         <>
           <div className="profile">
-            <img className="profileIMG" src={profile.profileImage} />
+            <img
+              className="profileIMG"
+              src={profile.profileImage}
+              onClick={seePic}
+            />
 
             <h2 className="profileName">
               {profile.firstName} {profile.lastName}
