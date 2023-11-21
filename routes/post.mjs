@@ -164,7 +164,7 @@ router.get('/feed', async (req, res, next) => {
 
     try {
         const projection = { _id: 1, title: 1, text: 1, time: 1, userId: 1, likes: 1, image: 1, userImage: 1 }
-        const cursor = col.find({}).sort({ _id: -1 }).project(projection).limit(20).skip(page);
+        const cursor = col.find({}).sort({ _id: -1 }).project(projection);
         let results = await cursor.toArray();
 
         console.log(results);
