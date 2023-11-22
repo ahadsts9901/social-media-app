@@ -659,11 +659,18 @@ const Profile = () => {
         <img src="${profile.profileImage}" class="profileImageSelect" />
       `,
       showCancelButton: false,
-      showConfirmButton: false,
+      showConfirmButton: true,
       // cancelButtonText: "Cancel",
-      // confirmButtonText: "Upload",
+      confirmButtonText: "Download",
       // cancelButtonColor: "#284352",
-      // confirmButtonColor: "#284352",
+      confirmButtonColor: "#284352",
+      preConfirm: async () => {
+        var element = document.createElement("a");
+        var file = new Blob([`"${profile.profileImage}"`], { type: "image/*" });
+        element.href = URL.createObjectURL(file);
+        element.download = `profile-photo-${new Date().toLocaleString()}`;
+        element.click();
+      },
     });
   };
 
