@@ -230,7 +230,9 @@ const Profile = () => {
           const emailElement = document.getElementById(inputId);
           const emailValue = emailElement.value.trim();
 
-          if (emailValue === "" || !emailValue.endsWith("@gmail.com")) {
+          if (emailValue === ""
+          //  || !emailValue.endsWith("@gmail.com")
+           ) {
             emailElement.classList.add("swal-validation-error");
             return false;
           } else {
