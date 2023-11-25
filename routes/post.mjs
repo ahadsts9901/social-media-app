@@ -392,6 +392,38 @@ router.get("/search", async (req, res) => {
     }
 });
 
+router.get('/search-user', async (req, res) => {
+
+    const searchText = req.query.q;
+
+    if (!searchText) {
+        return res.status(400).json({ error: 'Search text is required.' });
+    }
+
+    try {
+        // Perform the full-text search using the $text operator
+        const projection = { _id: 1, firstName: 1, lastName: 1, email: 1, profileImage: 1 };
+        const result = await userCollection.find({
+            $or: [
+                {
+                    firstName: { $regex: new RegExp(searchText, 'i') },
+                },
+                {
+                    lastName: { $regex: new RegExp(searchText, 'i') },
+                },
+            ],
+        }).project(projection).toArray();
+        console.log(result);
+        res.status(200).send(result)
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+});
+
+// like dislike
+
 router.post('/post/:postId/dolike', async (req, res, next) => {
 
     if (!ObjectId.isValid(req.params.postId)) {

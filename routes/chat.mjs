@@ -10,18 +10,18 @@ import { globalIoObject } from '../core.mjs';
 
 let router = express.Router();
 
-router.get('/chat', async (req, res, next) => {
-  try {
-    const projection = { _id: 1, firstName: 1, lastName: 1, email: 1, profileImage: 1 };
-    const cursor = userCollection.find({}).sort({ _id: 1 }).project(projection);
-    let results = await cursor.toArray();
+// router.get('/chat', async (req, res, next) => {
+//   try {
+//     const projection = { _id: 1, firstName: 1, lastName: 1, email: 1, profileImage: 1 };
+//     const cursor = userCollection.find({}).sort({ _id: 1 }).project(projection);
+//     let results = await cursor.toArray();
 
-    console.log(results);
-    res.send(results);
-  } catch (error) {
-    console.error(error);
-  }
-});
+//     console.log(results);
+//     res.send(results);
+//   } catch (error) {
+//     console.error(error);
+//   }
+// });
 
 router.post('/message', (req, res, next) => {
   req.decoded = { ...req.body.decoded };
