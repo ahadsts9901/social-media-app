@@ -51,8 +51,7 @@ router.post('/message', (req, res, next) => {
     to_id: new ObjectId(req.body.to_id),
     message: req.body.chatMessage,
     time: new Date(),
-    deletedFor : [],
-    unsend : false
+    unsend: false,
   }
 
   try {
@@ -134,13 +133,13 @@ router.get('/messages/:from_id', (req, res, next) => {
 
 });
 
-router.delete('/message/everyone/:messageId', async (req, res, next) => {
+router.put('/message/everyone/:messageId', async (req, res, next) => {
 
   const messageId = new ObjectId(req.params.messageId);
 
   try {
-    const deleteResponse = await chatCol.deleteOne({ _id: messageId });
-    if (deleteResponse.deletedCount === 1) {
+    const updateResponse = await chatCol.updateOne({ _id: messageId }, { $set: { unsend: true } });
+    if (updateResponse.updatesCount === 1) {
       res.send(`Message with id ${messageId} deleted successfully.`);
     } else {
       res.send('Message not found with the given id.');
