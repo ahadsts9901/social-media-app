@@ -102,6 +102,10 @@ img{
   object-fit: cover;
 }
 
+a{
+  cursor: pointer;
+}
+
 @media (max-width: 480px) {
   .postImg {
     width: 100%;
