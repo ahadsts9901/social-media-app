@@ -138,6 +138,10 @@ header{
     padding: 0;
 }
 
+#chatFileLabel{
+    cursor: pointer;
+}
+
 @media (max-width:425px){
     .chat{
         width: 100%;

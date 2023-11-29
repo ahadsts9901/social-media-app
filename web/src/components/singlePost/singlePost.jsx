@@ -357,7 +357,7 @@ const SinglePost = () => {
   return (
     <div className="singlePostCont">
       <div className="backArrow">
-        <h2 className="bi bi-arrow-left" onClick={() => { window.history.back() }}></h2>
+        <h2 className="bi bi-arrow-left pointer" onClick={() => { window.history.back() }}></h2>
       </div>
       {post ? ( // Check if post is defined
         <>

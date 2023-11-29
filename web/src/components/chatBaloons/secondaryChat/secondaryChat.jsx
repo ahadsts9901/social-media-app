@@ -22,14 +22,14 @@ const SecondaryChat = (props) => {
           <span className="otherDetails">
             {state.user.userId === props.from_id ? (
               showAction ? (
-                <ChevronUp
+                <ChevronUp className="pointer"
                   onClick={() => {
                     setShowAction(!showAction);
                   }}
                   style={{ marginTop: "0.3em" }}
                 />
               ) : (
-                <ChevronDown
+                <ChevronDown className="pointer"
                   onClick={() => {
                     setShowAction(!showAction);
                   }}
@@ -43,10 +43,10 @@ const SecondaryChat = (props) => {
         {state.user.userId === props.from_id ? (
           showAction ? (
             <div className="secondaryChatActionCont">
-              <p>
+              <p className="pointer">
                 <TrashFill /> Delete
               </p>
-              <p>
+              <p className="pointer">
                 <PencilFill /> Edit
               </p>
             </div>

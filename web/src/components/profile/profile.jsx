@@ -230,9 +230,10 @@ const Profile = () => {
           const emailElement = document.getElementById(inputId);
           const emailValue = emailElement.value.trim();
 
-          if (emailValue === ""
-          //  || !emailValue.endsWith("@gmail.com")
-           ) {
+          if (
+            emailValue === ""
+            //  || !emailValue.endsWith("@gmail.com")
+          ) {
             emailElement.classList.add("swal-validation-error");
             return false;
           } else {
@@ -678,6 +679,14 @@ const Profile = () => {
 
   return (
     <div className="posts">
+      <div className="backBtn">
+        <h2
+          className="bi bi-arrow-left pointer"
+          onClick={() => {
+            window.history.back();
+          }}
+        ></h2>
+      </div>
       {profile === "noUser" ? (
         <div className="noUser">No User Found</div>
       ) : (
@@ -707,6 +716,7 @@ const Profile = () => {
                   <PencilFill
                     style={{ fontSize: "0.7em" }}
                     onClick={changeEmail}
+                    className="pencil"
                   />
                 </span>
               ) : null}

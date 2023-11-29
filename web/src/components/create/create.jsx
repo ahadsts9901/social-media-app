@@ -92,7 +92,7 @@ const Create = () => {
       <h2 className="createNewPost">Share a thought!</h2>
       <div className="iconCont">
       <label htmlFor="file">
-        <h1 className="bi bi-file-image"></h1>
+        <h1 className="bi bi-file-image createImg"></h1>
       </label>
       {/* <label htmlFor="video">
         <h1 className="bi bi-play-btn-fill"></h1>

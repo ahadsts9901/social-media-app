@@ -87,6 +87,10 @@
   margin: auto!important;
 }
 
+.headSect{
+  cursor: pointer;
+}
+
 @media (max-width: 425px) {
   .chatUsers {
     width: 100%;

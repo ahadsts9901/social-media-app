@@ -22,14 +22,14 @@ const PrimaryChat = (props) => {
             <p id="chatTime">{time}</p>
             {state.user.userId === props.from_id && (
               showAction ? (
-                <ChevronUp
+                <ChevronUp className="pointer"
                   onClick={() => {
                     setShowAction(!showAction);
                   }}
                   style={{ marginTop: "0.3em" }}
                 />
               ) : (
-                <ChevronDown
+                <ChevronDown className="pointer"
                   onClick={() => {
                     setShowAction(!showAction);
                   }}
@@ -42,8 +42,8 @@ const PrimaryChat = (props) => {
         {state.user.userId === props.from_id && (
           showAction ? (
             <div className="chatActionCont">
-              <span onClick={() => { props.del(props._id) }}> <TrashFill /> Delete</span>
-              <span onClick={(event) => { props.edit(props._id, event) }}> <PencilFill /> Edit</span>
+              <span className="pointer" onClick={() => { props.del(props._id) }}> <TrashFill /> Delete</span>
+              <span className="pointer" onClick={(event) => { props.edit(props._id, event) }}> <PencilFill /> Edit</span>
             </div>
           ) : null
         )}

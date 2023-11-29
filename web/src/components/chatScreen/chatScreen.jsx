@@ -378,7 +378,7 @@ const ChatScreen = () => {
 
       <form onSubmit={chatSubmit} id="send">
         <input hidden type="file" id="chatFile" />
-        <label htmlFor="chatFile">
+        <label htmlFor="chatFile" id="chatFileLabel">
           <PlusLg />
         </label>
         <input
