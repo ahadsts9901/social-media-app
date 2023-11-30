@@ -162,6 +162,29 @@ const Post = (props) => {
     });
   };
 
+  const shareFun = () => {
+    let url = window.location.origin + "/post/" + props.postId;
+    navigator.clipboard.writeText(url).then(() => {
+      
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1200,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        // icon: "success",
+        title: "Link copied to clipboard"
+      });
+
+      });
+  };
+
   return (
     <div className="singlePost">
       <div
@@ -245,7 +268,7 @@ const Post = (props) => {
             <p>Comments ( {totalComments} )</p>
           )}
         </button>
-        <button>
+        <button onClick={shareFun}>
           <i className="bi bi-share-fill"></i>Share
         </button>
       </div>
