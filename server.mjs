@@ -61,9 +61,9 @@ app.use("/api/v1", chatRouter)
 app.use("/api/v1", commentsRouter)
 app.use("/api/v1", notificationRouter)
 
-app.use(express.static(path.join(__dirname, 'web/build')))
+app.use(express.static(path.join(__dirname, './web/build')))
 // app.get(express.static(path.join(__dirname, 'web/build')))
-app.use("*", express.static(path.join(__dirname, 'web/build')))
+app.use("*", express.static(path.join(__dirname, './web/build')))
 
 app.get("/api/v1/ping", (req, res) => {
     res.send("OK");
